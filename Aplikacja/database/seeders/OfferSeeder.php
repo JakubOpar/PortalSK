@@ -18,29 +18,66 @@ class OfferSeeder extends Seeder
             Offer::truncate();
         });
 
-        Offer::insert([[
-            'name' => 'oferta sprzedarzy ksiazki',
-            'description' => 'sprzedam ksiazke "Pan Tadeusz" Adama mieckiewicza',
-            'price' => '35',
-            'negotiation' => true,
-            'type' => 'sprzedaz',
-            'publication_date' => '2024-05-23',
-            'status' => 'aktualna',
-            'tags' => '#book #sprzedam',
-            'user_id' => '2',
-        ],
+        Offer::insert([
+            [
+                'name' => 'oferta sprzedarzy ksiazki',
+                'description' => 'sprzedam ksiazke "Pan Tadeusz" Adama mieckiewicza',
+                'price' => '35',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-23',
+                'status' => 'aktualna',
+                'tags' => '#book #sprzedam',
+                'user_id' => '2',
+            ],
 
-        [
-            'name' => 'oferta sprzedarzy koszulki',
-            'description' => 'sprzedam koszulkę',
-            'price' => '45',
-            'negotiation' => false,
-            'type' => 'sprzedaz',
-            'publication_date' => '2024-05-15',
-            'status' => 'zakończona',
-            'tags' => '#tshirt #sprzedam',
-            'user_id' => '3',
-        ],
-    ]);
+            [
+                'name' => 'oferta sprzedarzy koszulki',
+                'description' => 'sprzedam koszulkę',
+                'price' => '45',
+                'negotiation' => false,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-15',
+                'status' => 'zakończona',
+                'tags' => '#tshirt #sprzedam',
+                'user_id' => '3',
+            ],
+
+            [
+                'name' => 'oferta sprzedarzy telefonu',
+                'description' => 'sprzedam telefon marki Samsung',
+                'price' => '556',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-10',
+                'status' => 'aktualna',
+                'tags' => '#telefon #Samsung #sprzedam',
+                'user_id' => '4',
+            ],
+
+            [
+                'name' => 'oferta sprzedarzy spódnicy',
+                'description' => 'sprzedam spódnicę',
+                'price' => '30',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-09',
+                'status' => 'zarezerwowana',
+                'tags' => '#spódnica #sprzedam',
+                'user_id' => '5',
+            ],
+
+            [
+                'name' => 'oferta kupna podręcznika do biologi',
+                'description' => 'kupię podrecznik do biologi wydawnictwa Nowa Era 8 klasa szkoły podstawowej',
+                'price' => '45',
+                'negotiation' => true,
+                'type' => 'kupno',
+                'publication_date' => '2024-04-17',
+                'status' => 'aktualna',
+                'tags' => '#podręcznik #biologia #szkoła',
+                'user_id' => '3',
+            ],
+        ]);
     }
 }

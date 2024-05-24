@@ -19,7 +19,8 @@
                             @method('PUT')
                             <div class="row p-2">
                                 <label for="login">Login:</label>
-                                <input type="text" id="login" name="login" value="{{ Auth::user()->login }}" readonly>
+                                <input type="text" id="login" name="login" value="{{ Auth::user()->login }}"
+                                    readonly>
                             </div>
                             <div class="row p-2">
                                 <label for="name">Imię:</label>
@@ -35,14 +36,16 @@
                             </div>
                             <div class="row p-2">
                                 <label for="phone">Numer telefonu:</label>
-                                <input type="tel" id="phone" name="phone_number" value="{{ Auth::user()->phone_number }}">
+                                <input type="tel" id="phone" name="phone_number"
+                                    value="{{ Auth::user()->phone_number }}">
                             </div>
                             <div class="row p-2 mt-2">
                                 <div class="col-md-3">
                                     <button type="submit" class="btn btn-primary">Edytuj</button>
                                 </div>
                                 <div class="col-md-3">
-                                    <a href="{{ route('profile', Auth::user()->id ) }}" class="btn btn-danger">Anuluj</a>
+                                    <a href="{{ route('profile', Auth::user()->id) }}"
+                                        class="btn btn-danger">Anuluj</a>
                                 </div>
                             </div>
                         </form>
@@ -53,33 +56,36 @@
                 <div class="row p-2 bg-primary">
                     <h2 class="text-center">Moje oferty:</h2>
                 </div>
-                <div class="row">
+                <div class="row p-2">
                     <div class="col-md-12">
-                        <div class="card mb-4 mt-4">
-                            <img src="img/colorado.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Kolorado</h5>
-                                <p class="card-text">jest wyżynno-górzystym stanem, którego średnia wysokość nad
-                                    poziomem
-                                    morza przekracza 2000 m. Najwyższy szczyt Kolorado, Mount Elbert, wznosi się na 4399
-                                    m
-                                    n.p.m. </p>
-                                <a href="#" class="btn btn-primary">Więcej szczegółów...</a>
+                        @forelse ($offers as $off)
+                            <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+                                <div class="card w-100">
+                                    <div class="row no-gutters">
+                                        <img src="{{ asset('storage/test.png') }}" alt="...">
+                                    </div>
+                                    <div class="row no-gutters">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $off->name }}</h5>
+                                            <p class="card-text" style="height: 80px;">{{ $off->description }}</p>
+                                            <p class="card-text" style="height: 40px;">{{ $off->tags }}</p>
+                                        </div>
+                                        <div class="card-footer bg-transparent border-0">
+                                            <b>Typ: </b> {{ $off->type }}<br>
+                                            <b>Cena: </b> {{ $off->price }}<br>
+                                            <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}
+                                            <div class="mt-2">
+                                                <a href="#" class="btn btn-primary">Szczegóły</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="card mb-4 mt-4">
-                            <img src="img/colorado.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Kolorado</h5>
-                                <p class="card-text">jest wyżynno-górzystym stanem, którego średnia wysokość nad
-                                    poziomem
-                                    morza przekracza 2000 m. Najwyższy szczyt Kolorado, Mount Elbert, wznosi się na 4399
-                                    m
-                                    n.p.m. </p>
-                                <a href="#" class="btn btn-primary">Więcej szczegółów...</a>
+                        @empty
+                            <div class="col-12">
+                                <h2 class="text-center">W tej chwili brak ofert.</h2>
                             </div>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

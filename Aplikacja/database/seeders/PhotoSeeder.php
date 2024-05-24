@@ -27,7 +27,28 @@ class PhotoSeeder extends Seeder
             'file'=>'item2.png',
             'description'=>'zdjecie koszulki',
             'offer_id'=>'2',
-        ]
+        ],
+        [
+            'file'=>'item2.png',
+            'description'=>'zdjecie koszulki',
+            'offer_id'=>'1',
+        ],
+        [
+            'file'=>'test.png',
+            'description'=>'zdjecie spódnicy',
+            'offer_id'=>'4',
+        ],
+        [
+            'file'=>'test.png',
+            'description'=>'zdjecie telefonu',
+            'offer_id'=>'3',
+        ],
+        [
+            'file'=>'test.png',
+            'description'=>'',
+            'offer_id'=>'5',
+        ],
+
 
     ]);
     }

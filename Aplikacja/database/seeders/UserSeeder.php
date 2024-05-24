@@ -48,6 +48,26 @@ class UserSeeder extends Seeder
             'password' => Hash::make('1234'),
             'permission' => '2',
         ],
+
+        [
+            'name' => 'Piotr',
+            'surname' => 'Kos',
+            'email' => 'PKos@email.com',
+            'phone_number' => '567123098',
+            'login' => 'PKos123',
+            'password' => Hash::make('1234'),
+            'permission' => '2',
+        ],
+
+        [
+            'name' => 'Karolina',
+            'surname' => 'Kos',
+            'email' => 'KaKos@email.com',
+            'phone_number' => '444333222',
+            'login' => 'KaKos123',
+            'password' => Hash::make('1234'),
+            'permission' => '2',
+        ],
     ]);
 
     }

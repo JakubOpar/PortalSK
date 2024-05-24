@@ -28,7 +28,7 @@
                 </div>
                 <div class="row p-2 mt-2">
                     <div class="col-md-2">
-                       <a href="{{ route('profileEdit', Auth::user()->id) }}" class="btn btn-primary">Edytuj</a>
+                        <a href="{{ route('profileEdit', Auth::user()->id) }}" class="btn btn-primary">Edytuj</a>
                     </div>
                 </div>
             </div>
@@ -80,4 +80,5 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
 </body>
+
 </html>

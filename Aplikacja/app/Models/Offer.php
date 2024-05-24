@@ -23,6 +23,6 @@ class Offer extends Model
 
     public function photo(): HasMany
     {
-        return $this->hasMany(photo::class);
+        return $this->hasMany(Photo::class);
     }
 }

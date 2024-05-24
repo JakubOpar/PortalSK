@@ -57,8 +57,4 @@ class User extends Authenticatable
         return $this->hasMany(Offer::class);
     }
 
-    public function isAdmin()
-    {
-        return $this->permission === '1'; // Załóżmy, że pole "role" przechowuje rolę użytkownika
-    }
 }

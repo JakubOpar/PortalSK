@@ -39,7 +39,6 @@
         </div>
     </div>
 
-
     <div id="wycieczki" class="container-fluid bg-info p-5">
         <div class="row mb-4">
             <div class="col-12 text-center">
@@ -50,8 +49,8 @@
             <div class="col-md-3">
             </div>
             <div class="col-md-6">
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Szukaj ogłoszeń" aria-label="Search">
+                <form class="d-flex" role="search" action="{{ route('offersSearch') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Szukaj ogłoszeń" aria-label="Search">
                     <button class="btn btn-secondary" type="submit">Wyszukaj</button>
                 </form>
             </div>
@@ -68,14 +67,18 @@
             </div>
         </div>
 
-
         <div class="container">
             <div class="row">
                 @forelse ($offers as $off)
                     <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
                         <div class="card w-100">
                             <div class="row no-gutters">
-                                <img src="{{ asset('storage/test.png') }}" class="img-fluid" alt="...">
+                                @if ($off->photo->isNotEmpty())
+                                    <img src="{{ asset('storage/' . $off->photo->first()->file) }}" class="img-fluid"
+                                        alt="...">
+                                @else
+                                    <img src="{{ asset('storage/default.png') }}" class="img-fluid" alt="...">
+                                @endif
                             </div>
                             <div class="row no-gutters">
                                 <div class="card-body">
@@ -88,7 +91,8 @@
                                     <b>Cena: </b> {{ $off->price }}<br>
                                     <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}
                                     <div class="mt-2">
-                                        <a href="#" class="btn btn-primary">Szczegóły</a>
+                                        <a href="{{ route('offerShowWithPhotos', $off->id) }}"
+                                            class="btn btn-primary">Szczegóły</a>
                                     </div>
                                 </div>
                             </div>
@@ -96,27 +100,28 @@
                     </div>
                 @empty
                     <div class="col-12">
-                        <h2 class="text-center">W tej chwili brak ofert.</h2>
+                        <h2 class="text-center">Brak ofert.</h2>
                     </div>
                 @endforelse
+                @if (session('status'))
+                    <div class="alert alert-success text-center">
+                        {{ session('status') }}
+                    </div>
+                @endif
             </div>
         </div>
 
-
-
-
-
-
-
-
         <div class="row p-4">
-            <div class = "col-md-3">
+            <div class="col-md-3">
 
             </div>
-            <div class = "col-md-6 text-center">
-                <a href="#" class="btn btn-primary">Pokaż więcej ofert</a>
+            <div class="col-md-6 text-center">
+                <form action="{{ route('showMoreOffers') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Pokaż więcej ofert</button>
+                </form>
             </div>
-            <div class = "col-md-3">
+            <div class="col-md-3">
 
             </div>
         </div>

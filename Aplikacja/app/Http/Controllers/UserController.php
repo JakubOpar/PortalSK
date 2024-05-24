@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Używamy do hashowania haseł
 use Illuminate\Support\Facades\Validator; // Używamy do walidacji
+use Illuminate\Support\Facades\DB;
+use App\Models\Photo;
 
 class UserController extends Controller
 {
@@ -25,7 +27,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // Walidacja pól
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:20',
             'surname' => 'required|string|max:25',
@@ -55,7 +56,6 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
-        // Walidacja pól
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:20',
             'surname' => 'required|string|max:25',
@@ -91,8 +91,9 @@ class UserController extends Controller
 
     public function showSettings($id)
     {
-        $user = User::findOrFail($id);
-        return view('UserElements.userEdit', compact('user'));
+        $user = User::with('offers')->findOrFail($id);
+
+        return view('UserElements.userEdit', ['user' => $user, 'offers' => $user->offers]);
     }
 
     public function update(Request $request, $id)
@@ -128,8 +129,17 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        DB::transaction(function () use ($id) {
+            $user = User::with('offers.photo')->findOrFail($id);
+            foreach ($user->offers as $offer) {
+                $offer->photo()->delete();
+
+                $offer->delete();
+            }
+
+            $user->delete();
+        });
         return $this->index();
     }
+
 }

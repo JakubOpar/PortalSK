@@ -14,10 +14,46 @@ class OfferController extends Controller
         return view('AdminPages.offerA', ['offers' => $offers]);
     }
 
-    public function MainPageindex()
+    public function MainPageindex(Request $request)
     {
-        $offers = Offer::all();
+        $AllCount = Offer::count();
+        session()->put('AllCount', $AllCount);
+
+        $amount = $request->session()->get('amount', 4);
+
+        $offers = Offer::with('photo')->inRandomOrder()->take($amount)->get();
+
         return view('index', ['offers' => $offers]);
+    }
+
+    public function showMoreOffers(Request $request)
+    {
+        $AllCount = $request->session()->get('AllCount');
+        if (!$request->session()->has('amount')) {
+            $request->session()->put('amount', 4);
+        }
+        $count = $request->session()->get('amount');
+
+        if ($count >= $AllCount) {
+            return redirect()->route('mainPage')->with('status', 'Brak większej ilości ofert');
+        } else {
+            $request->session()->increment('amount', 4);
+
+            $offers = Offer::with('photo')->inRandomOrder()->take($count + 4)->get();
+
+            return redirect()->route('mainPage', ['offers' => $offers]);
+        }
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $offers = Offer::where('name', 'like', "%$query%")
+            ->orWhere('tags', 'like', "%$query%")
+            ->get();
+
+        return view('index', compact('offers'));
     }
 
     public function store(Request $request)
@@ -44,6 +80,13 @@ class OfferController extends Controller
         return view('AdminPages.offerEditA', compact('offer'));
     }
 
+    public function showWithPhotos($id)
+    {
+        $offer = Offer::with('photo')->findOrFail($id);
+
+        return view('UserElements.offerShow', ['offer' => $offer, 'photos' => $offer->photo]);
+    }
+
     public function update(Request $request, $id)
     {
 
@@ -66,8 +109,11 @@ class OfferController extends Controller
     public function destroy($id)
     {
         $offer = Offer::findOrFail($id);
+
+        $offer->photo()->delete();
+
         $offer->delete();
+
         return $this->index();
     }
-
 }
