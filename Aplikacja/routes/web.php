@@ -13,10 +13,8 @@ Route::post('/show-more-offers', [OfferController::class, 'showMoreOffers'])->na
 Route::get('/search', [OfferController::class, 'search'])->name('offersSearch');
 
 //Admin Panel
+Route::get('/admin', [AuthController::class, 'adminPage'])->name('admin');
 
-Route::get('/admin', function () {
-    return view('AdminPages.admin');
-})->name('admin');
 
 // Zarządzanie ofertami
 

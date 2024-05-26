@@ -38,4 +38,12 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+    public function adminPage()
+    {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
+        return view('AdminPages.admin');
+    }
+
 }

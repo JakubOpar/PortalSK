@@ -3,18 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash; // Używamy do hashowania haseł
-use Illuminate\Support\Facades\Validator; // Używamy do walidacji
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Photo;
+use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+
     public function index()
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         $users = User::all();
         return view('AdminPages.userA', ['users' => $users]);
     }
@@ -28,6 +34,9 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         try {
             $input = $request->validated();
             User::create($input);
@@ -40,37 +49,27 @@ class UserController extends Controller
         }
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:20',
-            'surname' => 'required|string|max:25',
-            'email' => 'required|email|max:40|unique:users,email',
-            'phone_number' => 'required|string|max:20',
-            'login' => 'required|string|max:30|unique:users,login',
-            'password' => 'required|string|max:100',
-            'commitPassword' => 'required|string|max:100|same:password'
-        ]);
+        try {
+            $input = $request->validated();
+            $input['permission'] = 2;
+            User::create($input);
 
-        if ($validator->fails()) {
-            return back()->withErrors(['commitPassword' => 'Hasła nie są takie same!'])->withInput();
+            return redirect()->route('mainPage');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
         }
-
-        User::create([
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'login' => $request->input('login'),
-            'password' => Hash::make($request->input('password')),
-            'permission' => 2
-        ]);
-
-        return redirect()->route('mainPage');
     }
+
 
     public function show($id)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
         return view('AdminPages.userEditA', ['user' => $user]);
     }
@@ -84,6 +83,10 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $id)
     {
+
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         try {
             $user = User::find($id);
             $input = $request->all();
@@ -114,6 +117,9 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         DB::transaction(function () use ($id) {
             $user = User::with('offers.photo')->findOrFail($id);
             foreach ($user->offers as $offer) {
@@ -126,5 +132,4 @@ class UserController extends Controller
         });
         return $this->index();
     }
-
 }

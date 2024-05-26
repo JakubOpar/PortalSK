@@ -7,11 +7,15 @@ use App\Http\Requests\UpdateOfferRequest;
 use App\Models\Offer;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OfferController extends Controller
 {
     public function index()
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         $offers = Offer::all();
         return view('AdminPages.offerA', ['offers' => $offers]);
     }
@@ -60,6 +64,9 @@ class OfferController extends Controller
 
     public function store(CreateOfferRequest $request)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         try {
             $input = $request->validated();
             Offer::create($input);
@@ -75,6 +82,9 @@ class OfferController extends Controller
 
     public function show($id)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         $offer = Offer::find($id);
         return view('AdminPages.offerEditA', ['offer' => $offer]);
     }
@@ -88,6 +98,9 @@ class OfferController extends Controller
 
     public function update(UpdateOfferRequest $request, $id)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         try {
             $offer = Offer::find($id);
             $input = $request->all();
@@ -103,6 +116,9 @@ class OfferController extends Controller
 
     public function destroy($id)
     {
+        if (Gate::denies('access-admin')) {
+            abort(403);
+        }
         $offer = Offer::findOrFail($id);
 
         $offer->photo()->delete();
