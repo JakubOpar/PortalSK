@@ -10,6 +10,15 @@
         <h2 class="mt-4">Oferty</h2>
         <form method="POST" action="{{ route('offerStore') }}">
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="row mb-2">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -43,6 +52,7 @@
                         <select class="form-select" id="statusSelect" name="status" >
                             <option value="aktualna" selected>aktualna</option>
                             <option value="zarezerwowana">zarezerwowana</option>
+                            <option value="zakończona">zakończona</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -94,7 +104,7 @@
                             <td>{{ $off->name }}</td>
                             <td>{{ $off->description }}</td>
                             <td>{{ $off->price }}</td>
-                            <td>{{ $off->negotiation }}</td>
+                            <td>{{ $off->negotiation ? 'tak' : 'nie' }}</td>
                             <td>{{ $off->type }}</td>
                             <td>{{ $off->status }}</td>
                             <td>{{ $off->tags }}</td>

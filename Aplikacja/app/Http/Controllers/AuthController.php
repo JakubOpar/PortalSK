@@ -38,16 +38,4 @@ class AuthController extends Controller
         return redirect('/');
     }
 
-    public function testAdminAccess()
-    {
-        // Pobierz aktualnie zalogowanego użytkownika
-        $user = Auth::user();
-        dd($user);
-        // Sprawdź, czy użytkownik ma dostęp do panelu administracyjnego za pomocą bramy
-        if (Gate::allows('access-admin', $user)) {
-            return "Użytkownik ma dostęp do panelu administracyjnego!";
-        } else {
-            return "Użytkownik nie ma dostępu do panelu administracyjnego!";
-        }
-    }
 }

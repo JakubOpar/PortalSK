@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Offer;
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash; // Używamy do hashowania haseł
@@ -25,33 +26,18 @@ class UserController extends Controller
         return view('UserElements.user', ['user' => $user, 'offers' => $user->offers]);
     }
 
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:20',
-            'surname' => 'required|string|max:25',
-            'email' => 'required|email|max:40|unique:users,email',
-            'phone_number' => 'required|string|max:20',
-            'login' => 'required|string|max:30|unique:users,login',
-            'password' => 'required|string|max:100',
-            'permission' => 'required|integer'
-        ]);
+        try {
+            $input = $request->validated();
+            User::create($input);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->route('userIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
         }
-
-        User::create([
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'login' => $request->input('login'),
-            'password' => Hash::make($request->input('password')),
-            'permission' => $request->input('permission')
-        ]);
-
-        return $this->index();
     }
 
     public function register(Request $request)
@@ -86,7 +72,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        return view('AdminPages.userEditA', compact('user'));
+        return view('AdminPages.userEditA', ['user' => $user]);
     }
 
     public function showSettings($id)
@@ -96,20 +82,19 @@ class UserController extends Controller
         return view('UserElements.userEdit', ['user' => $user, 'offers' => $user->offers]);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'login' => $request->input('login'),
-            'password' => Hash::make($request->input('password')),
-            'permission' => $request->input('permission')
-        ]);
+        try {
+            $user = User::find($id);
+            $input = $request->all();
+            $user->update($input);
 
-        return $this->index();
+            return redirect()->route('userIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
 
     public function updateInSettings(Request $request, $id)

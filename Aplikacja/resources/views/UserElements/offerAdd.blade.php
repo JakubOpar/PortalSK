@@ -8,7 +8,10 @@
 
     <div class="container flex-grow-1 d-flex flex-column mb-5">
         <h2 class="mt-5">Dodaj ofertę</h2>
-        <form id="editOfferForm" class="mt-4">
+        <form id="editOfferForm" class="mt-4" method="POST" action="{{ route('offerStore') }}"
+            enctype="multipart/form-data">
+            @csrf
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nazwa</label>
@@ -49,15 +52,13 @@
             </div>
             <div class="form-group">
                 <label for="fileInput">Wybierz zdjęcia (.jpg )</label>
-                <input type="file" class="form-control-file" id="fileInput" accept=".jpg" multiple>
+                <input type="file" class="form-control-file" id="fileInput" name="photos[]" accept=".jpg" multiple>
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary">Dodaj ofertę</button>
                 </div>
             </div>
-
-
         </form>
     </div>
 

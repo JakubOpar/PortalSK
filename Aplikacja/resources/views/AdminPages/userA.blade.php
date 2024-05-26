@@ -11,6 +11,15 @@
         <h2 class="mb-4">Użytkownicy</h2>
         <form method="POST" action="{{ route('userStore') }}">
             @csrf
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="row">
                 <div class="form-group col-md-1">
                     <input type="text" class="form-control" id="inputName" name="name" placeholder="Imię">

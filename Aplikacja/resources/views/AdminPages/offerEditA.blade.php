@@ -11,66 +11,95 @@
         <form id="editOfferForm" class="mt-4" action="{{ route('offerUpdate', $offer->id) }}" method="POST">
             @csrf
             @method('PUT')
+
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="id" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" value="{{ $offer->id }}" readonly>
+                    <input type="text" class="form-control" id="id" name="id" value="{{ $offer->id }}"
+                        readonly>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nazwa</label>
-                    <input type="text" class="form-control" id="name" name="name" maxlength="50" value="{{ $offer->name }}" required>
+                    <input type="text" class="form-control" id="name" name="name" maxlength="50"
+                        value="{{ $offer->name }}">
                 </div>
                 <div class="col-md-6">
                     <label for="type" class="form-label">Typ</label>
-                    <select class="form-select" id="type" name="type" value="{{ $offer->type }}" required>
-                        <option value="sprzedaz">Sprzedaż</option>
-                        <option value="kupno">Kupno</option>
+                    <select class="form-select" id="type" name="type">
+                        <option value="sprzedaz" {{ $offer->type == 'sprzedaz' ? 'selected' : '' }}>Sprzedaż</option>
+                        <option value="kupno" {{ $offer->type == 'kupno' ? 'selected' : '' }}>Kupno</option>
                     </select>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="description" class="form-label">Opis</label>
                     <textarea class="form-control" id="description" name="description" maxlength="200" rows="3">{{ $offer->description }}</textarea>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="price" class="form-label">Cena</label>
-                    <input type="number" class="form-control" id="price" name="price" step="0.01" value="{{ $offer->price }}" required>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01"
+                        value="{{ $offer->price }}">
                 </div>
                 <div class="col-md-6">
                     <label for="negotiation" class="form-label">Negocjacja</label>
-                    <select class="form-control" id="negotiation" name="negotiation" value="{{ $offer->negotiaion }}" required>
-                        <option value="1">Tak</option>
-                        <option value="0">Nie</option>
+                    <select class="form-select" id="negotiation" name="negotiation">
+                        <option value="1" {{ $offer->negotiation ? 'selected' : '' }}>Tak</option>
+                        <option value="0" {{ !$offer->negotiation ? 'selected' : '' }}>Nie</option>
                     </select>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="publication_date" class="form-label">Data publikacji</label>
-                    <input type="date" class="form-control" id="publication_date" name="publication_date" value="{{ $offer->publication_date }}" required>
+                    <input type="date" class="form-control" id="publication_date" name="publication_date"
+                        value="{{ $offer->publication_date }}" readonly>
                 </div>
                 <div class="col-md-6">
                     <label for="status" class="form-label">Status</label>
-                    <input type="text" class="form-control" id="status" name="status" maxlength="25" value="{{ $offer->status }}" required>
+                    <select class="form-select" id="statusSelect" name="status">
+                        <option value="aktualna" {{ $offer->status == 'aktualna' ? 'selected' : '' }}>aktualna</option>
+                        <option value="zarezerwowana" {{ $offer->status == 'zarezerwowana' ? 'selected' : '' }}>
+                            zarezerwowana</option>
+                            <option value="zakończona" {{ $offer->status == 'zakończona' ? 'selected' : '' }}>zakończona</option>
+                    </select>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="tags" class="form-label">Tagi</label>
-                    <input type="text" class="form-control" id="tags" name="tags" maxlength="100" value="{{ $offer->tags }}" required>
+                    <input type="text" class="form-control" id="tags" name="tags" maxlength="100"
+                        value="{{ $offer->tags }}">
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="user_id" class="form-label">ID użytkownika</label>
-                    <input type="number" class="form-control" id="user_id" name="user_id" value="{{ $offer->user_id }}" readonly>
+                    <input type="number" class="form-control" id="user_id" name="user_id"
+                        value="{{ $offer->user_id }}" readonly>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <button type="submit" class="btn btn-primary">Zapisz zmiany</button>

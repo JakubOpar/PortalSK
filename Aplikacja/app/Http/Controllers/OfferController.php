@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateOfferRequest;
+use App\Http\Requests\UpdateOfferRequest;
 use App\Models\Offer;
 use Closure;
 use Illuminate\Http\Request;
@@ -56,28 +58,25 @@ class OfferController extends Controller
         return view('index', compact('offers'));
     }
 
-    public function store(Request $request)
+    public function store(CreateOfferRequest $request)
     {
+        try {
+            $input = $request->validated();
+            Offer::create($input);
 
-        Offer::create([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'negotiation' => $request->input('negotiation'),
-            'type' => $request->input('type'),
-            'publication_date' => $request->input('publication_date'),
-            'status' => $request->input('status'),
-            'tags' => $request->input('tags'),
-            'user_id' => $request->input('user_id')
-        ]);
-
-        return $this->index();
+            return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
+
 
     public function show($id)
     {
-        $offer = Offer::findOrFail($id);
-        return view('AdminPages.offerEditA', compact('offer'));
+        $offer = Offer::find($id);
+        return view('AdminPages.offerEditA', ['offer' => $offer]);
     }
 
     public function showWithPhotos($id)
@@ -87,23 +86,19 @@ class OfferController extends Controller
         return view('UserElements.offerShow', ['offer' => $offer, 'photos' => $offer->photo]);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateOfferRequest $request, $id)
     {
+        try {
+            $offer = Offer::find($id);
+            $input = $request->all();
+            $offer->update($input);
 
-        $offer = Offer::findOrFail($id);
-        $offer->update([
-            'name' => $request->input('name'),
-            'description' => $request->input('description'),
-            'price' => $request->input('price'),
-            'negotiation' => $request->input('negotiation'),
-            'type' => $request->input('type'),
-            'publication_date' => $request->input('publication_date'),
-            'status' => $request->input('status'),
-            'tags' => $request->input('tags'),
-            'user_id' => $request->input('user_id')
-        ]);
-
-        return $this->index();
+            return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
 
     public function destroy($id)
