@@ -50,7 +50,8 @@
             </div>
             <div class="col-md-6">
                 <form class="d-flex" role="search" action="{{ route('offersSearch') }}" method="GET">
-                    <input class="form-control me-2" type="search" name="query" placeholder="Szukaj ogłoszeń" aria-label="Search">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Szukaj ogłoszeń"
+                        aria-label="Search">
                     <button class="btn btn-secondary" type="submit">Wyszukaj</button>
                 </form>
             </div>
@@ -73,16 +74,12 @@
                     <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
                         <div class="card w-100">
                             <div class="row no-gutters">
-                                @if ($off->photo->isNotEmpty())
-                                    <img src="{{ asset('storage/' . $off->photo->first()->file) }}" class="img-fluid"
-                                        alt="...">
-                                @else
-                                    <img src="{{ asset('storage/default.png') }}" class="img-fluid" alt="...">
-                                @endif
+                                <img src="{{ asset('storage/' . $off->photo->first()->file) }}" class="img-fluid"
+                                    alt="...">
                             </div>
                             <div class="row no-gutters">
                                 <div class="card-body">
-                                    <h5 class="card-title">{{ $off->name }}</h5>
+                                    <h5 class="card-title" style="height: 40px;">{{ $off->name }}</h5>
                                     <p class="card-text" style="height: 80px;">{{ $off->description }}</p>
                                     <p class="card-text" style="height: 40px;">{{ $off->tags }}</p>
                                 </div>

@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         $users = User::all();
         return view('AdminPages.userA', ['users' => $users]);
@@ -31,7 +31,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
 
         $user = User::with('offers')->findOrFail($id);
@@ -42,8 +42,15 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
+
+        $permission = $request->input('permission');
+
+        if (!in_array($permission, ['1', '2'])) {
+            return response()->view('errors.400', [], 400);
+        }
+
         try {
             $input = $request->validated();
             User::create($input);
@@ -59,7 +66,7 @@ class UserController extends Controller
     public function registerPage()
     {
         if (Gate::allows('is-logged-in')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         return view('PageFunctions.register');
     }
@@ -67,7 +74,7 @@ class UserController extends Controller
     public function register(RegisterRequest $request)
     {
         if (Gate::allows('is-logged-in')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         try {
             $input = $request->validated();
@@ -86,7 +93,7 @@ class UserController extends Controller
     public function show($id)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         $user = User::findOrFail($id);
         return view('AdminPages.userEditA', ['user' => $user]);
@@ -97,7 +104,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
 
         $user = User::with('offers')->findOrFail($id);
@@ -109,8 +116,15 @@ class UserController extends Controller
     {
 
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
+
+        $permission = $request->input('permission');
+
+        if (!in_array($permission, ['1', '2'])) {
+            return response()->view('errors.400', [], 400);
+        }
+
         try {
             $user = User::find($id);
             $input = $request->all();
@@ -129,7 +143,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
 
         $user = User::findOrFail($id);
@@ -148,7 +162,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         DB::transaction(function () use ($id) {
             $user = User::with('offers.photo')->findOrFail($id);

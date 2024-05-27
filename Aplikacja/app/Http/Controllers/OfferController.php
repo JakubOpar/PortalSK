@@ -6,6 +6,7 @@ use App\Http\Requests\CreateOfferByUserRequest;
 use App\Http\Requests\CreateOfferRequest;
 use App\Http\Requests\UpdateOfferRequest;
 use App\Models\Offer;
+use App\Models\Photo;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class OfferController extends Controller
     public function index()
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         $offers = Offer::all();
         return view('AdminPages.offerA', ['offers' => $offers]);
@@ -68,11 +69,31 @@ class OfferController extends Controller
     public function store(CreateOfferRequest $request)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
+
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $negotiation = $request->input('negotiation');
+
+        if (
+            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
+            !in_array($type, ['sprzedam', 'kupie']) ||
+            !in_array($negotiation, ['1', '0'])
+        ) {
+            return response()->view('errors.400', [], 400);
+        }
+
         try {
-            $input = $request->validated();
-            Offer::create($input);
+            $validatedData = $request->validated();
+            $offer = Offer::create($validatedData);
+
+            $photo = new Photo([
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+            ]);
+
+            $offer->photo()->save($photo);
 
             return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -82,10 +103,22 @@ class OfferController extends Controller
         }
     }
 
+
     public function storeByUser(CreateOfferByUserRequest $request)
     {
         if (Gate::denies('is-logged-in')) {
-            abort(403);
+            return response()->view('errors.401', [], 401);
+        }
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $negotiation = $request->input('negotiation');
+
+        if (
+            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
+            !in_array($type, ['sprzedam', 'kupie']) ||
+            !in_array($negotiation, ['1', '0'])
+        ) {
+            return response()->view('errors.400', [], 400);
         }
         try {
             $user = Auth::user();
@@ -95,7 +128,7 @@ class OfferController extends Controller
             $input['publication_date'] = Carbon::now();
             Offer::create($input);
 
-            return redirect()->route('profile',$user)->with('success', 'Oferta została pomyślnie utworzona.');
+            return redirect()->route('profile', $user)->with('success', 'Oferta została pomyślnie utworzona.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -107,7 +140,7 @@ class OfferController extends Controller
     public function show($id)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         $offer = Offer::find($id);
         return view('AdminPages.offerEditA', ['offer' => $offer]);
@@ -123,9 +156,8 @@ class OfferController extends Controller
     {
         $offer = Offer::with('photo')->findOrFail($id);
         $user = Auth::user();
-        if($user->id != $offer->user_id)
-        {
-            abort(403);
+        if ($user->id != $offer->user_id) {
+            return response()->view('errors.403', [], 403);
         }
         return view('UserElements.offerEdit', ['offer' => $offer, 'photos' => $offer->photo]);
     }
@@ -133,7 +165,7 @@ class OfferController extends Controller
     public function showAddOffer()
     {
         if (Gate::denies('is-logged-in')) {
-            abort(403);
+            return response()->view('errors.401', [], 401);
         }
         return view('UserElements.offerAdd');
     }
@@ -141,8 +173,21 @@ class OfferController extends Controller
     public function update(UpdateOfferRequest $request, $id)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.401', [], 401);
         }
+
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $negotiation = $request->input('negotiation');
+
+        if (
+            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
+            !in_array($type, ['sprzedam', 'kupie']) ||
+            !in_array($negotiation, ['1', '0'])
+        ) {
+            return response()->view('errors.400', [], 400);
+        }
+
         try {
             $offer = Offer::find($id);
             $input = $request->all();
@@ -158,6 +203,18 @@ class OfferController extends Controller
 
     public function updateByUser(UpdateOfferRequest $request, $id)
     {
+        $status = $request->input('status');
+        $type = $request->input('type');
+        $negotiation = $request->input('negotiation');
+
+        if (
+            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
+            !in_array($type, ['sprzedam', 'kupie']) ||
+            !in_array($negotiation, ['1', '0'])
+        ) {
+            return response()->view('errors.400', [], 400);
+        }
+
         try {
             $offer = Offer::find($id);
             $input = $request->all();
@@ -174,7 +231,7 @@ class OfferController extends Controller
     public function destroy($id)
     {
         if (Gate::denies('access-admin')) {
-            abort(403);
+            return response()->view('errors.403', [], 403);
         }
         $offer = Offer::findOrFail($id);
 

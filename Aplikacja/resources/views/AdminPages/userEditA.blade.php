@@ -59,7 +59,10 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="permission" class="form-label">Uprawnienia</label>
-                    <input type="number" class="form-control" id="permission" name="permission"  value="{{ $user->permission }}">
+                    <select class="form-select" id="inputPermission" name="permission">
+                        <option value="1" {{ $user->permission == '1' ? 'selected' : '' }}>1 - Admin</option>
+                        <option value="2" {{ $user->permission == '2' ? 'selected' : '' }}>2 - Użytkownik</option>
+                    </select>
                 </div>
             </div>
             <div class="row mb-3">

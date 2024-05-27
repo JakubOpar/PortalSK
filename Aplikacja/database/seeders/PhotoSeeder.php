@@ -18,38 +18,32 @@ class PhotoSeeder extends Seeder
             Photo::truncate();
         });
 
-        Photo::insert([[
-            'file'=>'item.png',
-            'description'=>'zdjecie ksiazki',
-            'offer_id'=>'1',
-        ],
-        [
-            'file'=>'item2.png',
-            'description'=>'zdjecie koszulki',
-            'offer_id'=>'2',
-        ],
-        [
-            'file'=>'item2.png',
-            'description'=>'zdjecie koszulki',
-            'offer_id'=>'1',
-        ],
-        [
-            'file'=>'test.png',
-            'description'=>'zdjecie spódnicy',
-            'offer_id'=>'4',
-        ],
-        [
-            'file'=>'test.png',
-            'description'=>'zdjecie telefonu',
-            'offer_id'=>'3',
-        ],
-        [
-            'file'=>'test.png',
-            'description'=>'',
-            'offer_id'=>'5',
-        ],
-
-
-    ]);
+        Photo::insert([
+            [
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+                'offer_id' => '1',
+            ],
+            [
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+                'offer_id' => '2',
+            ],
+            [
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+                'offer_id' => '3',
+            ],
+            [
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+                'offer_id' => '4',
+            ],
+            [
+                'file' => 'default.png',
+                'description' => 'domyślne zdjęcie dla oferty',
+                'offer_id' => '5',
+            ],
+        ]);
     }
 }

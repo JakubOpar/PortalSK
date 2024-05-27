@@ -32,7 +32,6 @@
                 </div>
                 <div class="form-group col-md-2">
                     <input type="number" class="form-control" id="inputPhoneNumber" name="phone_number" placeholder="Numer Telefonu">
-                    <!-- Poprawiono inputPhorneNumber na inputPhoneNumber -->
                 </div>
                 <div class="form-group col-md-1">
                     <input type="text" class="form-control" id="inputLogin" name="login" placeholder="Login">
@@ -41,7 +40,10 @@
                     <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Hasło">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="number" class="form-control" id="inputPermission" name="permission"  placeholder="Uprawnienia">
+                    <select class="form-select" id="inputPermission" name="permission">
+                        <option value="1">1 - Admin</option>
+                        <option value="2" selected>2 - Użytkownik</option>
+                    </select>
                 </div>
                 <div class="form-group col-md-1">
                     <button type="submit" class="btn btn-primary">Dodaj</button>
