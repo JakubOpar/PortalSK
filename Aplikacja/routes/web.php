@@ -38,9 +38,7 @@ Route::get('/login', [AuthController::class, 'showLoginPage'])->name('loginPage'
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/rejestracja', function () {
-    return view('PageFunctions.register');
-})->name('register');
+Route::get('/register', [UserController::class, 'registerPage'])->name('register');
 
 Route::post('/rejestracja', [UserController::class, 'register'])->name('userRegister');
 
@@ -54,6 +52,10 @@ Route::put('/user/{id}', [UserController::class, 'updateInSettings'])->name('pro
 // Panel ofert
 
 Route::get('/offers/{id}', [OfferController::class, 'showWithPhotos'])->name('offerShowWithPhotos');
+Route::get('user/offer/{id}', [OfferController::class, 'editWithPhotos'])->name('offerEditWithPhotos');
+Route::put('user/offer/{id}', [OfferController::class, 'updateByUser'])->name('updateByUser');
+Route::get('/offer/create', [OfferController::class, 'showAddOffer'])->name('showCreateOffer');
+Route::post('/offer/create',[OfferController::class, 'storeByUser'])->name('storeByUser');
 
 
 

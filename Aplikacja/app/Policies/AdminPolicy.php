@@ -22,4 +22,9 @@ class AdminPolicy
     {
         return $user->permission == 1;
     }
+
+    public function isLoggedIn(?User $user)
+    {
+        return $user !== null;
+    }
 }

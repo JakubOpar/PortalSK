@@ -89,7 +89,8 @@
                                 <div class="card-footer bg-transparent border-0">
                                     <b>Typ: </b> {{ $off->type }}<br>
                                     <b>Cena: </b> {{ $off->price }}<br>
-                                    <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}
+                                    <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}<br>
+                                    <b>Status: </b> {{ $off->status }}
                                     <div class="mt-2">
                                         <a href="{{ route('offerShowWithPhotos', $off->id) }}"
                                             class="btn btn-primary">Szczegóły</a>

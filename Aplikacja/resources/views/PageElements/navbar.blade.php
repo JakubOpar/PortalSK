@@ -21,11 +21,17 @@
                         <a class="nav-link" href="{{ route('admin') }}">Zarządzaj</a>
                     </li>
                 @endcan
+                @can('is-logged-in')
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('showCreateOffer') }}">Dodaj ofertę</a>
+                    </li>
+                @endcan
             </ul>
             <div class="d-flex flex-column flex-lg-row align-items-start">
                 @if (Auth::check())
                     <a href="{{ route('profile', ['id' => Auth::user()->id]) }}"
-                        class="btn btn-outline-light w-auto me-lg-2 mb-2 mb-lg-0"><img src="{{ asset('storage/user.png') }}" alt=""> {{ Auth::user()->login }}</a>
+                        class="btn btn-outline-light w-auto me-lg-2 mb-2 mb-lg-0"><img
+                            src="{{ asset('storage/user.png') }}" alt=""> {{ Auth::user()->login }}</a>
                     <a href="{{ route('logout') }}" class="btn btn-outline-light w-auto"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Wyloguj
                         się</a>

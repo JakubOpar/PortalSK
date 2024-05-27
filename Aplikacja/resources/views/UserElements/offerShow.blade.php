@@ -32,6 +32,9 @@
                 <div class="row p-2">
                     <span>Tagi: {{ $offer->tags }} </span>
                 </div>
+                <div class="row p-2">
+                    <span>Status: {{ $offer->status }} </span>
+                </div>
             </div>
             <div class="col-md-6 bg-white d-flex flex-column">
                 <div class="row p-2 bg-primary">

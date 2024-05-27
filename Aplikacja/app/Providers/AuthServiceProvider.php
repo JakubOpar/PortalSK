@@ -18,5 +18,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('access-admin', [AdminPolicy::class, 'access']);
+        Gate::define('is-logged-in', [AdminPolicy::class, 'isLoggedIn']);
     }
 }

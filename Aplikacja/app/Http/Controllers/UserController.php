@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\Models\Photo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -27,6 +27,13 @@ class UserController extends Controller
 
     public function indexUser($id)
     {
+
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $id) {
+            abort(403);
+        }
+
         $user = User::with('offers')->findOrFail($id);
 
         return view('UserElements.user', ['user' => $user, 'offers' => $user->offers]);
@@ -49,8 +56,19 @@ class UserController extends Controller
         }
     }
 
+    public function registerPage()
+    {
+        if (Gate::allows('is-logged-in')) {
+            abort(403);
+        }
+        return view('PageFunctions.register');
+    }
+
     public function register(RegisterRequest $request)
     {
+        if (Gate::allows('is-logged-in')) {
+            abort(403);
+        }
         try {
             $input = $request->validated();
             $input['permission'] = 2;
@@ -76,6 +94,12 @@ class UserController extends Controller
 
     public function showSettings($id)
     {
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $id) {
+            abort(403);
+        }
+
         $user = User::with('offers')->findOrFail($id);
 
         return view('UserElements.userEdit', ['user' => $user, 'offers' => $user->offers]);
@@ -102,6 +126,12 @@ class UserController extends Controller
 
     public function updateInSettings(Request $request, $id)
     {
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $id) {
+            abort(403);
+        }
+
         $user = User::findOrFail($id);
         $user->update([
             'name' => $request->input('name'),

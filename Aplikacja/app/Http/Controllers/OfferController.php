@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateOfferByUserRequest;
 use App\Http\Requests\CreateOfferRequest;
 use App\Http\Requests\UpdateOfferRequest;
 use App\Models\Offer;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Carbon\Carbon;
 
 class OfferController extends Controller
 {
@@ -59,7 +62,7 @@ class OfferController extends Controller
             ->orWhere('tags', 'like', "%$query%")
             ->get();
 
-        return view('index', compact('offers'));
+        return view('index', ['offer' => $offers]);
     }
 
     public function store(CreateOfferRequest $request)
@@ -72,6 +75,27 @@ class OfferController extends Controller
             Offer::create($input);
 
             return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
+    }
+
+    public function storeByUser(CreateOfferByUserRequest $request)
+    {
+        if (Gate::denies('is-logged-in')) {
+            abort(403);
+        }
+        try {
+            $user = Auth::user();
+            $input = $request->validated();
+            $input['user_id'] = $user->id;
+            $input['status'] = 'aktualna';
+            $input['publication_date'] = Carbon::now();
+            Offer::create($input);
+
+            return redirect()->route('profile',$user)->with('success', 'Oferta została pomyślnie utworzona.');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -92,8 +116,26 @@ class OfferController extends Controller
     public function showWithPhotos($id)
     {
         $offer = Offer::with('photo')->findOrFail($id);
-
         return view('UserElements.offerShow', ['offer' => $offer, 'photos' => $offer->photo]);
+    }
+
+    public function editWithPhotos($id)
+    {
+        $offer = Offer::with('photo')->findOrFail($id);
+        $user = Auth::user();
+        if($user->id != $offer->user_id)
+        {
+            abort(403);
+        }
+        return view('UserElements.offerEdit', ['offer' => $offer, 'photos' => $offer->photo]);
+    }
+
+    public function showAddOffer()
+    {
+        if (Gate::denies('is-logged-in')) {
+            abort(403);
+        }
+        return view('UserElements.offerAdd');
     }
 
     public function update(UpdateOfferRequest $request, $id)
@@ -106,7 +148,22 @@ class OfferController extends Controller
             $input = $request->all();
             $offer->update($input);
 
-            return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+            return redirect()->route('offerIndex');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
+    }
+
+    public function updateByUser(UpdateOfferRequest $request, $id)
+    {
+        try {
+            $offer = Offer::find($id);
+            $input = $request->all();
+            $offer->update($input);
+
+            return redirect()->route('profile', Auth::user()->id);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())

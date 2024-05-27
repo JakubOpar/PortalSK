@@ -38,7 +38,7 @@
                 </div>
                 <div class="row p-2">
                     @forelse ($offers as $off)
-                        <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+                        <div class="col-12 col-md-6 col-lg-6 mb-4 d-flex align-items-stretch">
                             <div class="card w-100">
                                 <div class="row no-gutters">
                                     <img src="{{ asset('storage/test.png') }}" alt="...">
@@ -52,9 +52,10 @@
                                     <div class="card-footer bg-transparent border-0">
                                         <b>Typ: </b> {{ $off->type }}<br>
                                         <b>Cena: </b> {{ $off->price }}<br>
-                                        <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}
+                                        <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}<br>
+                                        <b>Status: </b> {{ $off->status }}
                                         <div class="mt-2">
-                                            <a href="#" class="btn btn-primary">Szczegóły</a>
+                                            <a href="{{ route('offerEditWithPhotos', $off->id) }}" class="btn btn-primary">Edytuj</a>
                                         </div>
                                     </div>
                                 </div>
