@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Offer;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -50,7 +53,15 @@ class AuthController extends Controller
         if (Gate::denies('access-admin')) {
             abort(403);
         }
-        return view('AdminPages.admin');
-    }
 
+        $offerCount = Offer::count();
+        $userCount = User::count();
+        $offersPerDay = Offer::whereDate('publication_date', Carbon::today())->count();
+
+        return view('AdminPages.admin', [
+            'offerCount' => $offerCount,
+            'userCount' => $userCount,
+            'offersPerDay' => $offersPerDay
+        ]);
+    }
 }

@@ -12,19 +12,19 @@
                     <h2>Informacje:</h2>
                 </div>
                 <div class="row p-2">
-                    <span>Login: {{ Auth::user()->login }} </span>
+                    <span><b>Login:</b> {{ Auth::user()->login }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Imię: {{ Auth::user()->name }} </span>
+                    <span><b>Imię:</b> {{ Auth::user()->name }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Nazwisko: {{ Auth::user()->surname }} </span>
+                    <span><b>Nazwisko:</b> {{ Auth::user()->surname }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Email: {{ Auth::user()->email }} </span>
+                    <span><b>Email:</b> {{ Auth::user()->email }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Numer telefonu: {{ Auth::user()->phone_number }} </span>
+                    <span><b>Numer telefonu:</b> {{ Auth::user()->phone_number }} </span>
                 </div>
                 <div class="row p-2 mt-2">
                     <div class="col-md-2">
@@ -41,7 +41,11 @@
                         <div class="col-12 col-md-6 col-lg-6 mb-4 d-flex align-items-stretch">
                             <div class="card w-100">
                                 <div class="row no-gutters">
-                                    <img src="{{ asset('storage/test.png') }}" alt="...">
+                                    @if ($off->photo->first())
+                                        <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" alt="...">
+                                    @else
+                                        <img src="{{ asset('storage/default.png') }}" alt="Default Image">
+                                    @endif
                                 </div>
                                 <div class="row no-gutters">
                                     <div class="card-body">
@@ -53,9 +57,14 @@
                                         <b>Typ: </b> {{ $off->type }}<br>
                                         <b>Cena: </b> {{ $off->price }}<br>
                                         <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}<br>
-                                        <b>Status: </b> {{ $off->status }}
+                                        <b>Status: </b>
+                                        <b
+                                            class="{{ $off->status === 'aktualna' ? 'text-success' : ($off->status === 'zarezerwowana' ? 'text-warning' : ($off->status === 'zakończona' ? 'text-danger' : '')) }}">
+                                            {{ $off->status }}
+                                        </b>
                                         <div class="mt-2">
-                                            <a href="{{ route('offerEditWithPhotos', $off->id) }}" class="btn btn-primary">Edytuj</a>
+                                            <a href="{{ route('offerEditWithPhotos', $off->id) }}"
+                                                class="btn btn-primary">Edytuj</a>
                                         </div>
                                     </div>
                                 </div>
@@ -67,6 +76,7 @@
                         </div>
                     @endforelse
                 </div>
+
             </div>
         </div>
     </div>

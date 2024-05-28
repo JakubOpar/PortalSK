@@ -12,28 +12,31 @@
                     <h2>Informacje:</h2>
                 </div>
                 <div class="row p-2">
-                    <span>Nazwa: {{ $offer->name }} </span>
+                    <span><b>Nazwa:</b> {{ $offer->name }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Opis: {{ $offer->description }} </span>
+                    <span><b>Opis:</b> {{ $offer->description }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Cena: {{ $offer->price }} </span>
+                    <span><b>Cena:</b> {{ $offer->price }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Do negocjacji: {{ $offer->negotiation ? 'tak' : 'nie' }} </span>
+                    <span><b>Do negocjacji:</b> {{ $offer->negotiation ? 'tak' : 'nie' }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Typ: {{ $offer->type }} </span>
+                    <span><b>Typ:</b> {{ $offer->type }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Data publikacji: {{ $offer->publication_date }} </span>
+                    <span><b>Data publikacji:</b> {{ $offer->publication_date }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Tagi: {{ $offer->tags }} </span>
+                    <span><b>Tagi:</b> {{ $offer->tags }} </span>
                 </div>
                 <div class="row p-2">
-                    <span>Status: {{ $offer->status }} </span>
+                    <span><b>Status:</b> {{ $offer->status }} </span>
+                </div>
+                <div class="row p-2">
+                    <span><b>Dodał:</b> {{ $offer->user->login }} </span>
                 </div>
             </div>
             <div class="col-md-6 bg-white d-flex flex-column">
@@ -43,7 +46,7 @@
                 <div class="row p-2">
                     @forelse ($photos as $photo)
                         <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
-                            <img src="{{ asset('storage/' . $photo->file) }}" alt=""
+                            <img src="{{ asset('storage/photos/' . $photo->file) }}" alt=""
                                 class="img-fluid d-block mx-auto">
                         </div>
                     @empty

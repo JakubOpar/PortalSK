@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Models\Offer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use App\Models\Photo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,16 +27,17 @@ class UserController extends Controller
 
     public function indexUser($id)
     {
-
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
             return response()->view('errors.403', [], 403);
         }
 
-        $user = User::with('offers')->findOrFail($id);
+        $user = User::findOrFail($id);
 
-        return view('UserElements.user', ['user' => $user, 'offers' => $user->offers]);
+        $offers = Offer::with('photo')->where('user_id', $user->id)->get();
+
+        return view('UserElements.user', ['user' => $user, 'offers' => $offers]);
     }
 
     public function store(CreateUserRequest $request)

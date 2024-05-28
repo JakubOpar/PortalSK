@@ -65,7 +65,15 @@
                                 <option value="zakończona" {{ $offer->status == 'zakończona' ? 'selected' : '' }}>zakończona</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+                        </div>
+                        <div class="col-md-6">
+                            <a href="{{ route('profile', Auth::user()->id) }}"
+                                class="btn btn-danger">Anuluj</a>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="col-md-6 bg-white d-flex flex-column">
@@ -74,33 +82,32 @@
                 </div>
                 <div class="row p-2">
                     @if ($photos->isNotEmpty())
-                        <div class="col-12 mb-4">
-                            <table class="table table-bordered table-hover">
-                                <thead>
+                    <div class="col-12 mb-4">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Obraz</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($photos as $photo)
                                     <tr>
-                                        <th>Obraz</th>
-                                        <th></th>
+                                        <td class="align-middle">
+                                            <img src="{{ asset('storage/photos/' . $photo->file) }}" alt="">
+                                        </td>
+                                        <td>
+                                            <form action="" method="POST" class="m-0">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Usuń</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($photos as $photo)
-                                        <tr>
-                                            <td class="align-middle">
-                                                <img src="{{ asset('storage/' . $photo->file) }}" alt=""
-                                                    class="img-fluid">
-                                            </td>
-                                            <td class="d-flex justify-content-center">
-                                                <form action="" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger">Usuń</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     @else
                         <div class="col-12">
                             <h2 class="text-center">Brak zdjęć.</h2>

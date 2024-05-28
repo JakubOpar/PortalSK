@@ -8,8 +8,7 @@
 
     <div class="container flex-grow-1 d-flex flex-column mb-5">
         <h2 class="mt-5">Dodaj ofertę</h2>
-        <form id="editOfferForm" class="mt-4" method="POST" action="{{ route('storeByUser') }}"
-            enctype="multipart/form-data">
+        <form id="editOfferForm" class="mt-4" method="POST" action="{{ route('storeByUser') }}" enctype="multipart/form-data">
             @csrf
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -29,8 +28,8 @@
                 <div class="col-md-6">
                     <label for="type" class="form-label">Typ</label>
                     <select class="form-select" id="type" name="type">
-                        <option value="sprzedaz">Sprzedaż</option>
-                        <option value="kupno">Kupno</option>
+                        <option value="sprzedam">Sprzedaż</option>
+                        <option value="kupie">Kupno</option>
                     </select>
                 </div>
             </div>
@@ -60,8 +59,8 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="fileInput">Wybierz zdjęcia (.jpg )</label>
-                <input type="file" class="form-control-file" id="fileInput" name="photos[]" accept=".jpg" multiple>
+                <label for="fileInput">Wybierz zdjęcia (.jpg, .png)</label>
+                <input type="file" class="form-control-file" id="fileInput" name="photos[]" accept=".jpg,.png" multiple>
             </div>
             <div class="row mb-3">
                 <div class="col-md-4">

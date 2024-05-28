@@ -31,9 +31,9 @@ class OfferController extends Controller
 
         $amount = $request->session()->get('amount', 4);
 
-        $offers = Offer::with('photo')->inRandomOrder()->take($amount)->get();
+        $offers = Offer::with(['photo', 'user'])->inRandomOrder()->take($amount)->get();
 
-        return view('index', ['offers' => $offers]);
+        return view('index', ['offers' => $offers, 'AllCount' => $AllCount]);
     }
 
     public function showMoreOffers(Request $request)
@@ -105,36 +105,46 @@ class OfferController extends Controller
 
 
     public function storeByUser(CreateOfferByUserRequest $request)
-    {
-        if (Gate::denies('is-logged-in')) {
-            return response()->view('errors.401', [], 401);
-        }
-        $status = $request->input('status');
-        $type = $request->input('type');
-        $negotiation = $request->input('negotiation');
-
-        if (
-            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
-            !in_array($type, ['sprzedam', 'kupie']) ||
-            !in_array($negotiation, ['1', '0'])
-        ) {
-            return response()->view('errors.400', [], 400);
-        }
-        try {
-            $user = Auth::user();
-            $input = $request->validated();
-            $input['user_id'] = $user->id;
-            $input['status'] = 'aktualna';
-            $input['publication_date'] = Carbon::now();
-            Offer::create($input);
-
-            return redirect()->route('profile', $user)->with('success', 'Oferta została pomyślnie utworzona.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()
-                ->withErrors($e->errors())
-                ->withInput();
-        }
+{
+    if (Gate::denies('is-logged-in')) {
+        return response()->view('errors.401', [], 401);
     }
+
+    try {
+        $user = Auth::user();
+        $input = $request->validated();
+        $input['user_id'] = $user->id;
+        $input['status'] = 'aktualna';
+        $input['publication_date'] = Carbon::now();
+
+        $offer = Offer::create($input);
+
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                $filename = $this->generateRandomString() . '.' . $photo->getClientOriginalExtension();
+                $photo->storeAs('public/photos', $filename);
+
+                Photo::create([
+                    'file' => $filename,
+                    'description' => '',
+                    'offer_id' => $offer->id,
+                ]);
+            }
+        }
+
+        return redirect()->route('profile', $user)->with('success', 'Oferta została pomyślnie utworzona.');
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()
+            ->withErrors($e->errors())
+            ->withInput();
+    }
+}
+
+    private function generateRandomString($length = 10)
+    {
+        return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
+    }
+
 
 
     public function show($id)
@@ -148,7 +158,7 @@ class OfferController extends Controller
 
     public function showWithPhotos($id)
     {
-        $offer = Offer::with('photo')->findOrFail($id);
+        $offer = Offer::with(['photo', 'user'])->findOrFail($id);
         return view('UserElements.offerShow', ['offer' => $offer, 'photos' => $offer->photo]);
     }
 

@@ -25,9 +25,11 @@ class CreateOfferByUserRequest extends FormRequest
             'name' => 'required|string|max:50',
             'description' => 'nullable|string|max:200',
             'price' => 'required|numeric|min:0|max:999999999',
-            'negotiation' => 'required|boolean',
-            'type' => 'required|string|max:25',
+            'negotiation' => 'required|in:0,1',
+            'type' => 'required|string|in:sprzedam,kupie',
             'tags' => 'nullable|string|max:100',
+            'photos' => 'nullable|array',
+            'photos.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

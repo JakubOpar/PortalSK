@@ -57,12 +57,16 @@
                     <h2 class="text-center">Moje oferty:</h2>
                 </div>
                 <div class="row p-2">
-                    <div class="col-md-12">
+                    <div class="row p-2">
                         @forelse ($offers as $off)
-                            <div class="col-12 col-md-4 col-lg-3 mb-4 d-flex align-items-stretch">
+                            <div class="col-12 col-md-6 col-lg-6 mb-4 d-flex align-items-stretch">
                                 <div class="card w-100">
                                     <div class="row no-gutters">
-                                        <img src="{{ asset('storage/test.png') }}" alt="...">
+                                        @if ($off->photo->first())
+                                            <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" alt="...">
+                                        @else
+                                            <img src="{{ asset('storage/default.png') }}" alt="Default Image">
+                                        @endif
                                     </div>
                                     <div class="row no-gutters">
                                         <div class="card-body">
@@ -73,9 +77,15 @@
                                         <div class="card-footer bg-transparent border-0">
                                             <b>Typ: </b> {{ $off->type }}<br>
                                             <b>Cena: </b> {{ $off->price }}<br>
-                                            <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}
+                                            <b>Do negocjacji: </b> {{ $off->negotiation ? 'tak' : 'nie' }}<br>
+                                            <b>Status: </b>
+                                            <b
+                                                class="{{ $off->status === 'aktualna' ? 'text-success' : ($off->status === 'zarezerwowana' ? 'text-warning' : ($off->status === 'zakończona' ? 'text-danger' : '')) }}">
+                                                {{ $off->status }}
+                                            </b>
                                             <div class="mt-2">
-                                                <a href="#" class="btn btn-primary">Szczegóły</a>
+                                                <a href="{{ route('offerEditWithPhotos', $off->id) }}"
+                                                    class="btn btn-primary">Edytuj</a>
                                             </div>
                                         </div>
                                     </div>
@@ -87,6 +97,7 @@
                             </div>
                         @endforelse
                     </div>
+
                 </div>
             </div>
         </div>

@@ -19,31 +19,7 @@ class PhotoSeeder extends Seeder
         });
 
         Photo::insert([
-            [
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-                'offer_id' => '1',
-            ],
-            [
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-                'offer_id' => '2',
-            ],
-            [
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-                'offer_id' => '3',
-            ],
-            [
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-                'offer_id' => '4',
-            ],
-            [
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-                'offer_id' => '5',
-            ],
+            //
         ]);
     }
 }
