@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="password" class="form-label">Hasło</label>
-                    <input type="password" class="form-control" id="password" name="password" maxlength="100" value="{{ $user->password }}">
+                    <input type="password" class="form-control" id="password" name="password" maxlength="100" value="{{ $user->password }}" readonly>
                 </div>
             </div>
             <div class="row mb-3">

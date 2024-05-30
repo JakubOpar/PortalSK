@@ -7,7 +7,6 @@ use App\Http\Requests\CreateOfferRequest;
 use App\Http\Requests\UpdateOfferRequest;
 use App\Models\Offer;
 use App\Models\Photo;
-use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -45,7 +44,7 @@ class OfferController extends Controller
         $count = $request->session()->get('amount');
 
         if ($count >= $AllCount) {
-            return redirect()->route('mainPage')->with('status', 'Brak większej ilości ofert');
+            return redirect()->route('mainPage')->with('status', 'Brak większej ilości ofert.');
         } else {
             $request->session()->increment('amount', 4);
 
@@ -63,25 +62,16 @@ class OfferController extends Controller
             ->orWhere('tags', 'like', "%$query%")
             ->get();
 
-        return view('index', ['offer' => $offers]);
+        $AllCount = Offer::count();
+
+        return view('index', ['offers' => $offers, 'AllCount' => $AllCount]);
     }
+
 
     public function store(CreateOfferRequest $request)
     {
         if (Gate::denies('access-admin')) {
             return response()->view('errors.403', [], 403);
-        }
-
-        $status = $request->input('status');
-        $type = $request->input('type');
-        $negotiation = $request->input('negotiation');
-
-        if (
-            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
-            !in_array($type, ['sprzedam', 'kupie']) ||
-            !in_array($negotiation, ['1', '0'])
-        ) {
-            return response()->view('errors.400', [], 400);
         }
 
         try {
@@ -95,7 +85,7 @@ class OfferController extends Controller
 
             $offer->photo()->save($photo);
 
-            return redirect()->route('offerIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+            return redirect()->route('offerIndex');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -105,40 +95,40 @@ class OfferController extends Controller
 
 
     public function storeByUser(CreateOfferByUserRequest $request)
-{
-    if (Gate::denies('is-logged-in')) {
-        return response()->view('errors.401', [], 401);
-    }
-
-    try {
-        $user = Auth::user();
-        $input = $request->validated();
-        $input['user_id'] = $user->id;
-        $input['status'] = 'aktualna';
-        $input['publication_date'] = Carbon::now();
-
-        $offer = Offer::create($input);
-
-        if ($request->hasFile('photos')) {
-            foreach ($request->file('photos') as $photo) {
-                $filename = $this->generateRandomString() . '.' . $photo->getClientOriginalExtension();
-                $photo->storeAs('public/photos', $filename);
-
-                Photo::create([
-                    'file' => $filename,
-                    'description' => '',
-                    'offer_id' => $offer->id,
-                ]);
-            }
+    {
+        if (Gate::denies('is-logged-in')) {
+            return response()->view('errors.401', [], 401);
         }
 
-        return redirect()->route('profile', $user)->with('success', 'Oferta została pomyślnie utworzona.');
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return redirect()->back()
-            ->withErrors($e->errors())
-            ->withInput();
+        try {
+            $user = Auth::user();
+            $input = $request->validated();
+            $input['user_id'] = $user->id;
+            $input['status'] = 'aktualna';
+            $input['publication_date'] = Carbon::now();
+
+            $offer = Offer::create($input);
+
+            if ($request->hasFile('photos')) {
+                foreach ($request->file('photos') as $photo) {
+                    $filename = $this->generateRandomString() . '.' . $photo->getClientOriginalExtension();
+                    $photo->storeAs('public/photos', $filename);
+
+                    Photo::create([
+                        'file' => $filename,
+                        'description' => '',
+                        'offer_id' => $offer->id,
+                    ]);
+                }
+            }
+
+            return redirect()->route('profile', $user);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
-}
 
     private function generateRandomString($length = 10)
     {
@@ -186,18 +176,6 @@ class OfferController extends Controller
             return response()->view('errors.401', [], 401);
         }
 
-        $status = $request->input('status');
-        $type = $request->input('type');
-        $negotiation = $request->input('negotiation');
-
-        if (
-            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
-            !in_array($type, ['sprzedam', 'kupie']) ||
-            !in_array($negotiation, ['1', '0'])
-        ) {
-            return response()->view('errors.400', [], 400);
-        }
-
         try {
             $offer = Offer::find($id);
             $input = $request->all();
@@ -213,18 +191,6 @@ class OfferController extends Controller
 
     public function updateByUser(UpdateOfferRequest $request, $id)
     {
-        $status = $request->input('status');
-        $type = $request->input('type');
-        $negotiation = $request->input('negotiation');
-
-        if (
-            !in_array($status, ['aktualna', 'zarezerwowana', 'zakończona']) ||
-            !in_array($type, ['sprzedam', 'kupie']) ||
-            !in_array($negotiation, ['1', '0'])
-        ) {
-            return response()->view('errors.400', [], 400);
-        }
-
         try {
             $offer = Offer::find($id);
             $input = $request->all();
@@ -250,5 +216,19 @@ class OfferController extends Controller
         $offer->delete();
 
         return $this->index();
+    }
+
+    public function destroyByUser($id)
+    {
+        if (Gate::denies('is-logged-in')) {
+            return response()->view('errors.403', [], 403);
+        }
+        $offer = Offer::findOrFail($id);
+
+        $offer->photo()->delete();
+
+        $offer->delete();
+
+        return redirect()->back();
     }
 }

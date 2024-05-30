@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserInSettingsRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Offer;
 use App\Models\User;
@@ -131,7 +132,7 @@ class UserController extends Controller
             $input = $request->all();
             $user->update($input);
 
-            return redirect()->route('userIndex')->with('success', 'Oferta została pomyślnie utworzona.');
+            return redirect()->route('userIndex');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -139,7 +140,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateInSettings(Request $request, $id)
+    public function updateInSettings(UpdateUserInSettingsRequest $request, $id)
     {
         $currentUser = Auth::user();
 
@@ -147,17 +148,17 @@ class UserController extends Controller
             return response()->view('errors.403', [], 403);
         }
 
-        $user = User::findOrFail($id);
-        $user->update([
-            'name' => $request->input('name'),
-            'surname' => $request->input('surname'),
-            'email' => $request->input('email'),
-            'phone_number' => $request->input('phone_number'),
-            'login' => $request->input('login'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        try {
+            $user = User::find($id);
+            $input = $request->all();
+            $user->update($input);
 
-        return redirect()->route('profile', ['id' => $id]);
+            return redirect()->route('profile',$id);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
     }
 
     public function destroy($id)

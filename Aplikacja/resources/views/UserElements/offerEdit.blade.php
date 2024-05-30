@@ -36,15 +36,17 @@
                     </div>
                     <div class="mb-3">
                         <label for="negotiation" class="form-label">Do negocjacji:</label>
-                        <select id="negotiation" name="negotiation" class="form-control">
+                        <select id="negotiation" name="negotiation" class="form-select">
                             <option value="1" {{ $offer->negotiation ? 'selected' : '' }}>tak</option>
                             <option value="0" {{ !$offer->negotiation ? 'selected' : '' }}>nie</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Typ:</label>
-                        <input type="text" id="type" name="type" class="form-control"
-                            value="{{ $offer->type }}">
+                        <select class="form-select" id="type" name="type">
+                            <option value="sprzedam" {{ $offer->type == 'sprzedam' ? 'selected' : '' }}>Sprzedaż</option>
+                            <option value="kupie" {{ $offer->type == 'kupie' ? 'selected' : '' }}>Kupno</option>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="publication_date" class="form-label">Data publikacji:</label>

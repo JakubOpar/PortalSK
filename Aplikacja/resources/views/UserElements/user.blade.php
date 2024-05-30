@@ -62,9 +62,13 @@
                                             class="{{ $off->status === 'aktualna' ? 'text-success' : ($off->status === 'zarezerwowana' ? 'text-warning' : ($off->status === 'zakończona' ? 'text-danger' : '')) }}">
                                             {{ $off->status }}
                                         </b>
-                                        <div class="mt-2">
-                                            <a href="{{ route('offerEditWithPhotos', $off->id) }}"
-                                                class="btn btn-primary">Edytuj</a>
+                                        <div class="mt-2 d-flex justify-content-around">
+                                            <a href="{{ route('offerEditWithPhotos', $off->id) }}" class="btn btn-primary">Edytuj</a>
+                                            <form action="{{ route('userOfferDelete', $off->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Usuń</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -72,11 +76,10 @@
                         </div>
                     @empty
                         <div class="col-12">
-                            <h2 class="text-center">W tej chwili brak ofert.</h2>
+                            <h2 class="text-center">Brak ofert.</h2>
                         </div>
                     @endforelse
                 </div>
-
             </div>
         </div>
     </div>

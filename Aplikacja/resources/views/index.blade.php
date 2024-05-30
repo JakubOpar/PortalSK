@@ -42,7 +42,7 @@
     <div id="wycieczki" class="container-fluid bg-info p-5">
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <h1 class="text-light">Szukaj spośród {{$AllCount}} ofert!</h1>
+                <h1 class="text-light">Szukaj spośród <span class="text-warning">{{$AllCount}} ofert!</span></h1>
             </div>
         </div>
         <div class="row">

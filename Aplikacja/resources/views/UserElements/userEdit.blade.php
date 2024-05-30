@@ -17,6 +17,17 @@
                         <form action="{{ route('profileUpdate', Auth::user()->id) }}" method="POST">
                             @csrf
                             @method('PUT')
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             <div class="row p-2">
                                 <label for="login">Login:</label>
                                 <input type="text" id="login" name="login" value="{{ Auth::user()->login }}"
@@ -44,8 +55,7 @@
                                     <button type="submit" class="btn btn-primary">Edytuj</button>
                                 </div>
                                 <div class="col-md-3">
-                                    <a href="{{ route('profile', Auth::user()->id) }}"
-                                        class="btn btn-danger">Anuluj</a>
+                                    <a href="{{ route('profile', Auth::user()->id) }}" class="btn btn-danger">Anuluj</a>
                                 </div>
                             </div>
                         </form>
@@ -63,7 +73,8 @@
                                 <div class="card w-100">
                                     <div class="row no-gutters">
                                         @if ($off->photo->first())
-                                            <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" alt="...">
+                                            <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}"
+                                                alt="...">
                                         @else
                                             <img src="{{ asset('storage/default.png') }}" alt="Default Image">
                                         @endif
@@ -83,9 +94,13 @@
                                                 class="{{ $off->status === 'aktualna' ? 'text-success' : ($off->status === 'zarezerwowana' ? 'text-warning' : ($off->status === 'zakończona' ? 'text-danger' : '')) }}">
                                                 {{ $off->status }}
                                             </b>
-                                            <div class="mt-2">
-                                                <a href="{{ route('offerEditWithPhotos', $off->id) }}"
-                                                    class="btn btn-primary">Edytuj</a>
+                                            <div class="mt-2 d-flex justify-content-around">
+                                                <a href="{{ route('offerEditWithPhotos', $off->id) }}" class="btn btn-primary">Edytuj</a>
+                                                <form action="{{ route('userOfferDelete', $off->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">Usuń</button>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +108,7 @@
                             </div>
                         @empty
                             <div class="col-12">
-                                <h2 class="text-center">W tej chwili brak ofert.</h2>
+                                <h2 class="text-center">Brak ofert.</h2>
                             </div>
                         @endforelse
                     </div>

@@ -1,6 +1,13 @@
+@echo off
+
 %systemDrive%\xampp\mysql\bin\mysql -uroot -e "CREATE DATABASE IF NOT EXISTS portal;"
 
 if %errorlevel% neq 0 msg %username% "Nie udalo sie utworzyc bazy danych." && exit /b %errorlevel%
+
+if exist storage\app\public\photos (
+    rmdir /s /q storage\app\public\photos
+    mkdir storage\app\public\photos
+)
 
 php -r "copy('.env.example', '.env');"
 

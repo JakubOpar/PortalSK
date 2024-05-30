@@ -25,9 +25,9 @@ class UpdateOfferRequest extends FormRequest
             'name' => 'required|string|max:50',
             'description' => 'nullable|string|max:200',
             'price' => 'required|numeric|min:0|max:999999999',
-            'negotiation' => 'required|boolean',
-            'type' => 'required|string|max:25',
-            'status' => 'required|string|max:25',
+            'negotiation' => 'required|boolean|in:0,1',
+            'type' => 'required|string|in:sprzedam,kupie',
+            'status' => 'required|string|in:aktualna,zarezerwowana,zakończona',
             'tags' => 'nullable|string|max:100',
         ];
     }

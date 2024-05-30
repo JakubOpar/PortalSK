@@ -39,8 +39,8 @@
                 <div class="col-md-6">
                     <label for="type" class="form-label">Typ</label>
                     <select class="form-select" id="type" name="type">
-                        <option value="sprzedaz" {{ $offer->type == 'sprzedaz' ? 'selected' : '' }}>Sprzedaż</option>
-                        <option value="kupno" {{ $offer->type == 'kupno' ? 'selected' : '' }}>Kupno</option>
+                        <option value="sprzedam" {{ $offer->type == 'sprzedam' ? 'selected' : '' }}>Sprzedaż</option>
+                        <option value="kupie" {{ $offer->type == 'kupie' ? 'selected' : '' }}>Kupno</option>
                     </select>
                 </div>
             </div>
