@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price',20)->check('price >= 0');
             $table->boolean('negotiation');
             $table->string('type',25);
-            $table->date('publication_date')->check('publication_date >= 2023-01-01');
+            $table->date('publication_date')->check('publication_date >= 2024-01-01');
             $table->string('status',25);
             $table->string('tags',100)->nullable();
             $table->foreignIdFor(User::class)->constrained();

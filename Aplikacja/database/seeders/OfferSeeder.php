@@ -95,7 +95,7 @@ class OfferSeeder extends Seeder
                 'description' => 'Wynajmę 2-pokojowe mieszkanie w centrum miasta, umeblowane, od zaraz.',
                 'price' => '2000',
                 'negotiation' => false,
-                'type' => 'wynajem',
+                'type' => 'kupno',
                 'publication_date' => '2024-05-18',
                 'status' => 'aktualna',
                 'tags' => '#wynajem #mieszkanie #centrum',

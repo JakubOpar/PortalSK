@@ -27,7 +27,7 @@ class CreateOfferRequest extends FormRequest
             'price' => 'required|numeric|min:0|max:999999999',
             'negotiation' => 'required|boolean|in:0,1',
             'type' => 'required|string|in:sprzedam,kupie',
-            'publication_date' => 'required|date',
+            'publication_date' => 'required|date|after_or_equal:2024-01-01',
             'status' => 'required|string|in:aktualna,zarezerwowana,zakończona',
             'tags' => 'nullable|string|max:100',
             'user_id' => 'required|exists:users,id',
