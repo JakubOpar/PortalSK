@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateUserInSettingsRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Offer;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         $users = User::all();
         return view('AdminPages.userA', ['users' => $users]);
@@ -31,7 +30,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
 
         $user = User::findOrFail($id);
@@ -44,14 +43,10 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
 
         $permission = $request->input('permission');
-
-        if (!in_array($permission, ['1', '2'])) {
-            return response()->view('errors.400', [], 400);
-        }
 
         try {
             $input = $request->validated();
@@ -68,7 +63,7 @@ class UserController extends Controller
     public function registerPage()
     {
         if (Gate::allows('is-logged-in')) {
-            return response()->view('errors.403', [], 403);
+           abort(403);
         }
         return view('PageFunctions.register');
     }
@@ -95,7 +90,7 @@ class UserController extends Controller
     public function show($id)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         $user = User::findOrFail($id);
         return view('AdminPages.userEditA', ['user' => $user]);
@@ -106,7 +101,7 @@ class UserController extends Controller
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            return response()->view('errors.403', [], 403);
+           abort(403);
         }
 
         $user = User::with('offers')->findOrFail($id);
@@ -116,20 +111,20 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $id)
     {
-
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
-        }
-
-        $permission = $request->input('permission');
-
-        if (!in_array($permission, ['1', '2'])) {
-            return response()->view('errors.400', [], 400);
+            abort(403);
         }
 
         try {
             $user = User::find($id);
             $input = $request->all();
+
+            if (empty($input['password'])) {
+                unset($input['password']);
+            } else {
+                $input['password'] = Hash::make($input['password']);
+            }
+
             $user->update($input);
 
             return redirect()->route('userIndex');
@@ -140,12 +135,13 @@ class UserController extends Controller
         }
     }
 
+
     public function updateInSettings(UpdateUserInSettingsRequest $request, $id)
     {
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
 
         try {
@@ -153,7 +149,7 @@ class UserController extends Controller
             $input = $request->all();
             $user->update($input);
 
-            return redirect()->route('profile',$id);
+            return redirect()->route('profile', $id);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -164,7 +160,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         DB::transaction(function () use ($id) {
             $user = User::with('offers.photo')->findOrFail($id);

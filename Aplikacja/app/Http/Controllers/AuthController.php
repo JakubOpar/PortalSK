@@ -57,11 +57,15 @@ class AuthController extends Controller
         $offerCount = Offer::count();
         $userCount = User::count();
         $offersPerDay = Offer::whereDate('publication_date', Carbon::today())->count();
+        $offersPerDayChart = Offer::selectRaw('DATE(publication_date) as date, COUNT(*) as count')
+            ->groupBy('date')
+            ->pluck('count', 'date');
 
         return view('AdminPages.admin', [
             'offerCount' => $offerCount,
             'userCount' => $userCount,
-            'offersPerDay' => $offersPerDay
+            'offersPerDay' => $offersPerDay,
+            'offersPerDayChart' => $offersPerDayChart
         ]);
     }
 }

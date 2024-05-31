@@ -38,7 +38,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="type" class="form-label">Typ</label>
-                    <select class="form-select" id="type" name="type">
+                    <select class="form-select" id="type" name="type" required>
                         <option value="sprzedam" {{ $offer->type == 'sprzedam' ? 'selected' : '' }}>Sprzedaż</option>
                         <option value="kupie" {{ $offer->type == 'kupie' ? 'selected' : '' }}>Kupno</option>
                     </select>
@@ -55,12 +55,12 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="price" class="form-label">Cena</label>
-                    <input type="number" class="form-control" id="price" name="price" step="0.01"
-                        value="{{ $offer->price }}">
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" max="999999999"
+                        value="{{ $offer->price }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="negotiation" class="form-label">Negocjacja</label>
-                    <select class="form-select" id="negotiation" name="negotiation">
+                    <select class="form-select" id="negotiation" name="negotiation" required>
                         <option value="1" {{ $offer->negotiation ? 'selected' : '' }}>Tak</option>
                         <option value="0" {{ !$offer->negotiation ? 'selected' : '' }}>Nie</option>
                     </select>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="status" class="form-label">Status</label>
-                    <select class="form-select" id="statusSelect" name="status">
+                    <select class="form-select" id="statusSelect" name="status" required>
                         <option value="aktualna" {{ $offer->status == 'aktualna' ? 'selected' : '' }}>aktualna</option>
                         <option value="zarezerwowana" {{ $offer->status == 'zarezerwowana' ? 'selected' : '' }}>
                             zarezerwowana</option>

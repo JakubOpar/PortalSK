@@ -42,7 +42,7 @@
                             <div class="card w-100">
                                 <div class="row no-gutters">
                                     @if ($off->photo->first())
-                                        <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" alt="...">
+                                        <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" alt="..." class="img-fluid">
                                     @else
                                         <img src="{{ asset('storage/default.png') }}" alt="Default Image">
                                     @endif

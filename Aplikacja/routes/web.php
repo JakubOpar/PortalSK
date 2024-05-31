@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,11 @@ Route::get('user/offer/{id}', [OfferController::class, 'editWithPhotos'])->name(
 Route::put('user/offer/{id}', [OfferController::class, 'updateByUser'])->name('updateByUser');
 Route::get('/offer/create', [OfferController::class, 'showAddOffer'])->name('showCreateOffer');
 Route::post('/offer/create',[OfferController::class, 'storeByUser'])->name('storeByUser');
+
+//zarzadzanie zdjęciami
+Route::post('/offer/photo/add/{id}',[PhotoController::class, 'store'])->name('storePhoto');
+Route::delete('/offer/photo/delete/{id}', [PhotoController::class, 'destroy'])->name('deletePhoto');
+
 
 
 

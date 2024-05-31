@@ -19,7 +19,21 @@ class PhotoSeeder extends Seeder
         });
 
         Photo::insert([
-            //
+            [
+                'file' => 'example1.jpg',
+                'description' => 'to jest przykładowe zjęcie oferty',
+                'offer_id' => 1,
+            ],
+            [
+                'file' => 'example2.jpg',
+                'description' => 'to jest przykładowe zjęcie oferty',
+                'offer_id' => 1,
+            ],
+            [
+                'file' => 'example3.jpg',
+                'description' => 'to jest przykładowe zjęcie oferty',
+                'offer_id' => 3,
+            ],
         ]);
     }
 }

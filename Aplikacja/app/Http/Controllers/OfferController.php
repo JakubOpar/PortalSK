@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Carbon\Carbon;
 
+//charts.js
+
 class OfferController extends Controller
 {
     public function index()
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         $offers = Offer::all();
         return view('AdminPages.offerA', ['offers' => $offers]);
@@ -71,19 +73,12 @@ class OfferController extends Controller
     public function store(CreateOfferRequest $request)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
 
         try {
             $validatedData = $request->validated();
-            $offer = Offer::create($validatedData);
-
-            $photo = new Photo([
-                'file' => 'default.png',
-                'description' => 'domyślne zdjęcie dla oferty',
-            ]);
-
-            $offer->photo()->save($photo);
+            Offer::create($validatedData);
 
             return redirect()->route('offerIndex');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -97,7 +92,7 @@ class OfferController extends Controller
     public function storeByUser(CreateOfferByUserRequest $request)
     {
         if (Gate::denies('is-logged-in')) {
-            return response()->view('errors.401', [], 401);
+            abort(401);
         }
 
         try {
@@ -140,7 +135,7 @@ class OfferController extends Controller
     public function show($id)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         $offer = Offer::find($id);
         return view('AdminPages.offerEditA', ['offer' => $offer]);
@@ -157,7 +152,7 @@ class OfferController extends Controller
         $offer = Offer::with('photo')->findOrFail($id);
         $user = Auth::user();
         if ($user->id != $offer->user_id) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         return view('UserElements.offerEdit', ['offer' => $offer, 'photos' => $offer->photo]);
     }
@@ -165,7 +160,7 @@ class OfferController extends Controller
     public function showAddOffer()
     {
         if (Gate::denies('is-logged-in')) {
-            return response()->view('errors.401', [], 401);
+            abort(401);
         }
         return view('UserElements.offerAdd');
     }
@@ -173,7 +168,7 @@ class OfferController extends Controller
     public function update(UpdateOfferRequest $request, $id)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.401', [], 401);
+            abort(401);
         }
 
         try {
@@ -207,7 +202,7 @@ class OfferController extends Controller
     public function destroy($id)
     {
         if (Gate::denies('access-admin')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         $offer = Offer::findOrFail($id);
 
@@ -221,7 +216,7 @@ class OfferController extends Controller
     public function destroyByUser($id)
     {
         if (Gate::denies('is-logged-in')) {
-            return response()->view('errors.403', [], 403);
+            abort(401);
         }
         $offer = Offer::findOrFail($id);
 

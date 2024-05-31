@@ -24,58 +24,44 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Imię</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
-                    @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}"
+                        required maxlength="20" pattern="^[A-Za-z]+$">
                 </div>
                 <div class="col-md-6">
                     <label for="surname" class="form-label">Nazwisko</label>
-                    <input type="text" class="form-control" id="surname" name="surname" value="{{ old('surname') }}">
-                    @error('surname')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control" id="surname" name="surname"
+                        value="{{ old('surname') }}" required maxlength="25" pattern="^[A-Za-z]+$">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
-                    @error('email')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}"
+                        required maxlength="40" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                 </div>
                 <div class="col-md-6">
                     <label for="phone_number" class="form-label">Numer telefonu</label>
-                    <input type="tel" class="form-control" id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
-                    @error('phone_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number"
+                        value="{{ old('phone_number') }}" required pattern="^[0-9]{9}$"
+                        title="Numer telefonu musi mieć dokładnie 9 cyfr">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="login" class="form-label">Login</label>
-                    <input type="text" class="form-control" id="login" name="login" value="{{ old('login') }}">
-                    @error('login')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="text" class="form-control" id="login" name="login" value="{{ old('login') }}"
+                        required maxlength="30">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="password" class="form-label">Hasło</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                    @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="password" class="form-control" id="password" name="password" required maxlength="100">
                 </div>
                 <div class="col-md-6">
                     <label for="commitPassword" class="form-label">Potwierdź hasło</label>
-                    <input type="password" class="form-control" id="commitPassword" name="commitPassword">
-                    @error('commitPassword')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <input type="password" class="form-control" id="commitPassword" name="commitPassword" required
+                        maxlength="100">
                 </div>
             </div>
             <div class="row mb-3">
@@ -87,6 +73,7 @@
                 </div>
             </div>
         </form>
+
     </div>
 
     @include('PageElements.footer')

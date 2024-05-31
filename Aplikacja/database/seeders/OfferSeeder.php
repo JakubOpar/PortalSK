@@ -20,19 +20,19 @@ class OfferSeeder extends Seeder
 
         Offer::insert([
             [
-                'name' => 'oferta sprzedarzy ksiazki',
-                'description' => 'sprzedam ksiazke "Pan Tadeusz" Adama mieckiewicza',
+                'name' => 'oferta sprzedaży ksiazki',
+                'description' => 'sprzedam ksiazke "Pan Tadeusz" Adama Mickiewicza',
                 'price' => '35',
                 'negotiation' => true,
                 'type' => 'sprzedaz',
-                'publication_date' => '2024-05-23',
+                'publication_date' => '2024-05-15',
                 'status' => 'aktualna',
                 'tags' => '#book #sprzedam',
                 'user_id' => '2',
             ],
 
             [
-                'name' => 'oferta sprzedarzy koszulki',
+                'name' => 'oferta sprzedaży koszulki',
                 'description' => 'sprzedam koszulkę',
                 'price' => '45',
                 'negotiation' => false,
@@ -44,7 +44,7 @@ class OfferSeeder extends Seeder
             ],
 
             [
-                'name' => 'oferta sprzedarzy telefonu',
+                'name' => 'oferta sprzedaży telefonu',
                 'description' => 'sprzedam telefon marki Samsung',
                 'price' => '556',
                 'negotiation' => true,
@@ -56,7 +56,7 @@ class OfferSeeder extends Seeder
             ],
 
             [
-                'name' => 'oferta sprzedarzy spódnicy',
+                'name' => 'oferta sprzedaży spódnicy',
                 'description' => 'sprzedam spódnicę',
                 'price' => '30',
                 'negotiation' => true,
@@ -73,7 +73,7 @@ class OfferSeeder extends Seeder
                 'price' => '45',
                 'negotiation' => true,
                 'type' => 'kupno',
-                'publication_date' => '2024-04-17',
+                'publication_date' => '2024-05-09',
                 'status' => 'aktualna',
                 'tags' => '#podręcznik #biologia #szkoła',
                 'user_id' => '3',

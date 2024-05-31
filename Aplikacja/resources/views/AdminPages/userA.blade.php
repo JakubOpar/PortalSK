@@ -7,7 +7,7 @@
     @include('PageElements.navbar')
 
 
-    <div class="container-fluid p-4">
+    <div class="container mb-4 mt-4">
         <h2 class="mb-4">Użytkownicy</h2>
         <form method="POST" action="{{ route('userStore') }}">
             @csrf
@@ -22,27 +22,36 @@
             @endif
             <div class="row">
                 <div class="form-group col-md-1">
-                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Imię">
-                </div>
-                <div class="form-group col-md-1">
-                    <input type="text" class="form-control" id="inputSurname" name="surname" placeholder="Nazwisko">
+                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Imię"
+                        value="{{ old('name') }}" required maxlength="20" pattern="^[A-Za-z]+$">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="text" class="form-control" id="inputEmail" name="email" placeholder="Email">
+                    <input type="text" class="form-control" id="inputSurname" name="surname" placeholder="Nazwisko"
+                        value="{{ old('surname') }}" required maxlength="25" pattern="^[A-Za-z]+$">
                 </div>
                 <div class="form-group col-md-2">
-                    <input type="number" class="form-control" id="inputPhoneNumber" name="phone_number" placeholder="Numer Telefonu">
-                </div>
-                <div class="form-group col-md-1">
-                    <input type="text" class="form-control" id="inputLogin" name="login" placeholder="Login">
-                </div>
-                <div class="form-group col-md-1">
-                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Hasło">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email"
+                        value="{{ old('email') }}" required maxlength="40"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                        title="Email musi być w formacie name@email.com">
                 </div>
                 <div class="form-group col-md-2">
-                    <select class="form-select" id="inputPermission" name="permission">
-                        <option value="1">1 - Admin</option>
-                        <option value="2" selected>2 - Użytkownik</option>
+                    <input type="tel" class="form-control" id="inputPhoneNumber" name="phone_number"
+                        placeholder="Numer Telefonu" value="{{ old('phone_number') }}" required pattern="^[0-9]{9}$"
+                        title="Numer telefonu musi mieć dokładnie 9 cyfr">
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="text" class="form-control" id="inputLogin" name="login" placeholder="Login"
+                        value="{{ old('login') }}" required maxlength="30">
+                </div>
+                <div class="form-group col-md-1">
+                    <input type="password" class="form-control" id="inputPassword" name="password" placeholder="Hasło"
+                        required maxlength="100">
+                </div>
+                <div class="form-group col-md-2">
+                    <select class="form-select" id="inputPermission" name="permission" required>
+                        <option value="1" {{ old('permission') == '1' ? 'selected' : '' }}>1 - Admin</option>
+                        <option value="2" {{ old('permission') == '2' ? 'selected' : '' }}>2 - Użytkownik</option>
                     </select>
                 </div>
                 <div class="form-group col-md-1">
@@ -50,9 +59,10 @@
                 </div>
             </div>
         </form>
+
     </div>
 
-    <div class="container-fluid p-4 d-flex flex-column flex-grow-1">
+    <div class="container d-flex flex-column flex-grow-1">
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
@@ -63,7 +73,6 @@
                         <th scope="col">Email</th>
                         <th scope="col">Numer telefonu</th>
                         <th scope="col">Login</th>
-                        <th scope="col">Hasło</th>
                         <th scope="col">P. uprawnień</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -78,7 +87,6 @@
                             <td>{{ $us->email }}</td>
                             <td>{{ $us->phone_number }}</td>
                             <td>{{ $us->login }}</td>
-                            <td>{{ $us->password }}</td>
                             <td>{{ $us->permission }}</td>
                             <td><a href="{{ route('userShow', $us->id) }}">Edytuj</a></td>
                             <td>

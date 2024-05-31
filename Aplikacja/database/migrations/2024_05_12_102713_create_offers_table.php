@@ -16,10 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name',50);
             $table->string('description',200)->nullable();
-            $table->decimal('price',20);
+            $table->decimal('price',20)->check('price >= 0');
             $table->boolean('negotiation');
             $table->string('type',25);
-            $table->date('publication_date');
+            $table->date('publication_date')->check('publication_date >= 2023-01-01');
             $table->string('status',25);
             $table->string('tags',100)->nullable();
             $table->foreignIdFor(User::class)->constrained();

@@ -31,24 +31,29 @@
                             <div class="row p-2">
                                 <label for="login">Login:</label>
                                 <input type="text" id="login" name="login" value="{{ Auth::user()->login }}"
-                                    readonly>
+                                    readonly required maxlength="30">
                             </div>
                             <div class="row p-2">
                                 <label for="name">Imię:</label>
-                                <input type="text" id="name" name="name" value="{{ Auth::user()->name }}">
+                                <input type="text" id="name" name="name" value="{{ Auth::user()->name }}"
+                                    required maxlength="20">
                             </div>
                             <div class="row p-2">
                                 <label for="surname">Nazwisko:</label>
-                                <input type="text" id="surname" name="surname" value="{{ Auth::user()->surname }}">
+                                <input type="text" id="surname" name="surname" value="{{ Auth::user()->surname }}"
+                                    required maxlength="25">
                             </div>
                             <div class="row p-2">
                                 <label for="email">Email:</label>
-                                <input type="email" id="email" name="email" value="{{ Auth::user()->email }}">
+                                <input type="email" id="email" name="email" value="{{ Auth::user()->email }}"
+                                    required maxlength="40" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                                    title="Email musi być w formacie name@email.com">
                             </div>
                             <div class="row p-2">
                                 <label for="phone">Numer telefonu:</label>
                                 <input type="tel" id="phone" name="phone_number"
-                                    value="{{ Auth::user()->phone_number }}">
+                                    value="{{ Auth::user()->phone_number }}" required minlength="9" maxlength="9"
+                                    pattern="^[0-9]{9}$" title="Numer telefonu musi mieć dokładnie 9 cyfr">
                             </div>
                             <div class="row p-2 mt-2">
                                 <div class="col-md-3">
@@ -73,7 +78,7 @@
                                 <div class="card w-100">
                                     <div class="row no-gutters">
                                         @if ($off->photo->first())
-                                            <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}"
+                                            <img src="{{ asset('storage/photos/' . $off->photo->first()->file) }}" class="img-fluid"
                                                 alt="...">
                                         @else
                                             <img src="{{ asset('storage/default.png') }}" alt="Default Image">
@@ -95,7 +100,8 @@
                                                 {{ $off->status }}
                                             </b>
                                             <div class="mt-2 d-flex justify-content-around">
-                                                <a href="{{ route('offerEditWithPhotos', $off->id) }}" class="btn btn-primary">Edytuj</a>
+                                                <a href="{{ route('offerEditWithPhotos', $off->id) }}"
+                                                    class="btn btn-primary">Edytuj</a>
                                                 <form action="{{ route('userOfferDelete', $off->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')

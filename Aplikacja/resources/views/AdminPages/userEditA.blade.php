@@ -29,37 +29,41 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Imię</label>
-                    <input type="text" class="form-control" id="name" name="name" maxlength="20" value="{{ $user->name }}">
+                    <input type="text" class="form-control" id="name" name="name" maxlength="20" value="{{ $user->name }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="surname" class="form-label">Nazwisko</label>
-                    <input type="text" class="form-control" id="surname" name="surname" maxlength="25" value="{{ $user->surname }}" >
+                    <input type="text" class="form-control" id="surname" name="surname" maxlength="25" value="{{ $user->surname }}" required>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" maxlength="40"  value="{{ $user->email }}">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email"
+                        value="{{ $user->email }}" required maxlength="40"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Email musi być w formacie name@email.com">
                 </div>
                 <div class="col-md-6">
                     <label for="phone_number" class="form-label">Numer telefonu</label>
-                    <input type="tel" class="form-control" id="phone_number" name="phone_number" maxlength="20" value="{{ $user->phone_number }}">
+                    <input type="tel" class="form-control" id="inputPhoneNumber" name="phone_number"
+                        placeholder="Numer Telefonu" value="{{ $user->phone_number }}" required pattern="^[0-9]{9}$"
+                        title="Numer telefonu musi mieć dokładnie 9 cyfr">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="login" class="form-label">Login</label>
-                    <input type="text" class="form-control" id="login" name="login" maxlength="30" value="{{ $user->login }}">
+                    <input type="text" class="form-control" id="login" name="login" maxlength="30" value="{{ $user->login }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="password" class="form-label">Hasło</label>
-                    <input type="password" class="form-control" id="password" name="password" maxlength="100" value="{{ $user->password }}" readonly>
+                    <input type="password" class="form-control" id="password" name="password" maxlength="100">
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="permission" class="form-label">Uprawnienia</label>
-                    <select class="form-select" id="inputPermission" name="permission">
+                    <select class="form-select" id="inputPermission" name="permission" required>
                         <option value="1" {{ $user->permission == '1' ? 'selected' : '' }}>1 - Admin</option>
                         <option value="2" {{ $user->permission == '2' ? 'selected' : '' }}>2 - Użytkownik</option>
                     </select>

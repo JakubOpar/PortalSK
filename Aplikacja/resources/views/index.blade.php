@@ -14,27 +14,9 @@
         </div>
         <div class="row p-4">
             <div class="col-12 text-justify">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In lobortis augue non risus eleifend
-                    molestie.
-                    Morbi imperdiet quam eros, a finibus est sagittis ut. Duis pulvinar velit tristique orci convallis
-                    ultrices.
-                    Praesent sed sem malesuada, vestibulum risus non, fermentum tellus. Orci varius natoque penatibus et
-                    magnis
-                    dis parturient montes, nascetur ridiculus mus. Vivamus nec diam at purus feugiat rhoncus. Aenean
-                    lobortis
-                    lorem et ornare varius. Fusce nec finibus tortor. Nullam sodales, elit tincidunt bibendum cursus,
-                    velit dolor
-                    volutpat augue, sit amet efficitur dolor enim quis massa. Proin finibus consequat aliquet. Nulla
-                    facilisi.
+                <p style="font-size: 20px;"> Jesteśmy szybko rozwijającym się serwisem internetowym, działającym od stycznia 2024 roku. Naszym celem jest utworzenie idealnego miejsca,
+                    gdzie mozna dać nowe życie nie używanym przedmiotom oraz znaleźć dla siebie to czego się szuka.
                 </p>
-
-                <p>Vivamus vestibulum viverra risus at efficitur. Vivamus vehicula felis vel pellentesque hendrerit.
-                    Etiam lorem
-                    lacus, pellentesque sit amet ultrices egestas, finibus non turpis. Aliquam sit amet ligula nibh.
-                    Nulla
-                    lobortis tempor ipsum, nec luctus augue ultricies in. Cras viverra laoreet lacinia. Vestibulum
-                    tristique
-                    scelerisque leo quis rutrum. Maecenas gravida eros massa, ut varius nunc porta in.</p>
             </div>
         </div>
     </div>

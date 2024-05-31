@@ -6,7 +6,7 @@
 <body>
     @include('PageElements.navbar')
 
-    <div class="container-fluid p-4">
+    <div class="container">
         <h2 class="mt-4">Oferty</h2>
         <form method="POST" action="{{ route('offerStore') }}">
             @csrf
@@ -23,51 +23,59 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="inputName">Nazwa oferty:</label>
-                        <input type="text" class="form-control" id="inputName" name="name">
+                        <input type="text" class="form-control" id="inputName" name="name"
+                            value="{{ old('name') }}" required maxlength="50">
                     </div>
                     <div class="form-group">
                         <label for="inputPrice">Cena</label>
-                        <input type="text" class="form-control" id="inputPrice" name="price">
+                        <input type="number" class="form-control" id="inputPrice" name="price"
+                            value="{{ old('price') }}" required min="0" max="999999999" step="0.01">
                     </div>
                     <div class="form-group">
                         <label for="typeSelect" class="form-label">Typ oferty</label>
-                        <select class="form-select" id="typeSelect" name="type" >
-                            <option value="sprzedam" selected>Sprzedam</option>
-                            <option value="kupie">Kupię</option>
+                        <select class="form-select" id="typeSelect" name="type" required>
+                            <option value="sprzedam" {{ old('type') == 'sprzedam' ? 'selected' : '' }}>Sprzedam</option>
+                            <option value="kupie" {{ old('type') == 'kupie' ? 'selected' : '' }}>Kupię</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="negotiaionSelect" class="form-label">Do negocjacji</label>
-                        <select class="form-select" id="negotiaionSelect" name="negotiation" >
-                            <option value="1" selected>Tak</option>
-                            <option value="0">Nie</option>
+                        <select class="form-select" id="negotiaionSelect" name="negotiation" required>
+                            <option value="1" {{ old('negotiation') == '1' ? 'selected' : '' }}>Tak</option>
+                            <option value="0" {{ old('negotiation') == '0' ? 'selected' : '' }}>Nie</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="inputPublicationDate">Data wystawienia</label>
-                        <input type="date" class="form-control" id="inputPublicationDate" name="publication_date">
+                        <input type="date" class="form-control" id="inputPublicationDate" name="publication_date"
+                            value="{{ old('publication_date') }}" required>
                     </div>
                     <div class="form-group">
                         <label for="statusSelect" class="form-label">Status</label>
-                        <select class="form-select" id="statusSelect" name="status" >
-                            <option value="aktualna" selected>aktualna</option>
-                            <option value="zarezerwowana">zarezerwowana</option>
-                            <option value="zakończona">zakończona</option>
+                        <select class="form-select" id="statusSelect" name="status" required>
+                            <option value="aktualna" {{ old('status') == 'aktualna' ? 'selected' : '' }}>aktualna
+                            </option>
+                            <option value="zarezerwowana" {{ old('status') == 'zarezerwowana' ? 'selected' : '' }}>
+                                zarezerwowana</option>
+                            <option value="zakończona" {{ old('status') == 'zakończona' ? 'selected' : '' }}>zakończona
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="inputUserId">Id użytkownika</label>
-                        <input type="number" class="form-control" id="inputUserId" name="user_id">
+                        <input type="number" class="form-control" id="inputUserId" name="user_id"
+                            value="{{ old('user_id') }}" required min="0">
                     </div>
                     <div class="form-group">
                         <label for="inputTags">Tagi</label>
-                        <input type="text" class="form-control" id="inputTags" name="tags">
+                        <input type="text" class="form-control" id="inputTags" name="tags"
+                            value="{{ old('tags') }}" maxlength="100">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="inputDescription">Opis:</label>
-                        <textarea class="form-control" id="inputDescription" rows="20" name="description"></textarea>
+                        <textarea class="form-control" id="inputDescription" rows="20" name="description" maxlength="200">{{ old('description') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -79,7 +87,7 @@
         </form>
     </div>
 
-    <div class="container-fluid p-4">
+    <div class="container">
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead>
