@@ -25,16 +25,14 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="id" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" value="{{ $offer->id }}"
-                        readonly>
+                    <input type="text" class="form-control" id="id" name="id" value="{{ $offer->id }}" readonly>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nazwa</label>
-                    <input type="text" class="form-control" id="name" name="name" maxlength="50"
-                        value="{{ $offer->name }}">
+                    <input type="text" class="form-control" id="name" name="name" maxlength="50" value="{{ $offer->name }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="type" class="form-label">Typ</label>
@@ -55,8 +53,7 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="price" class="form-label">Cena</label>
-                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" max="999999999"
-                        value="{{ $offer->price }}" required>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" max="999999999" value="{{ $offer->price }}" required>
                 </div>
                 <div class="col-md-6">
                     <label for="negotiation" class="form-label">Negocjacja</label>
@@ -70,16 +67,14 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="publication_date" class="form-label">Data publikacji</label>
-                    <input type="date" class="form-control" id="publication_date" name="publication_date"
-                        value="{{ $offer->publication_date }}" readonly>
+                    <input type="date" class="form-control" id="publication_date" name="publication_date" value="{{ $offer->publication_date }}" readonly>
                 </div>
                 <div class="col-md-6">
                     <label for="status" class="form-label">Status</label>
                     <select class="form-select" id="statusSelect" name="status" required>
                         <option value="aktualna" {{ $offer->status == 'aktualna' ? 'selected' : '' }}>aktualna</option>
-                        <option value="zarezerwowana" {{ $offer->status == 'zarezerwowana' ? 'selected' : '' }}>
-                            zarezerwowana</option>
-                            <option value="zakończona" {{ $offer->status == 'zakończona' ? 'selected' : '' }}>zakończona</option>
+                        <option value="zarezerwowana" {{ $offer->status == 'zarezerwowana' ? 'selected' : '' }}>zarezerwowana</option>
+                        <option value="zakończona" {{ $offer->status == 'zakończona' ? 'selected' : '' }}>zakończona</option>
                     </select>
                 </div>
             </div>
@@ -87,16 +82,14 @@
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="tags" class="form-label">Tagi</label>
-                    <input type="text" class="form-control" id="tags" name="tags" maxlength="100"
-                        value="{{ $offer->tags }}">
+                    <input type="text" class="form-control" id="tags" name="tags" maxlength="100" value="{{ $offer->tags }}">
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="user_id" class="form-label">ID użytkownika</label>
-                    <input type="number" class="form-control" id="user_id" name="user_id"
-                        value="{{ $offer->user_id }}" readonly>
+                    <input type="number" class="form-control" id="user_id" name="user_id" value="{{ $offer->user_id }}" readonly>
                 </div>
             </div>
 

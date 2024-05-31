@@ -37,7 +37,7 @@
             </div>
 
             <div class="container mt-5">
-                <h2 class="text-center">Wykres ilości ofert na dany dzień</h2>
+                <h2 class="text-center">Wykres liczby ofert na dany dzień</h2>
                 <canvas id="offersChart" width="400" height="200"></canvas>
             </div>
 

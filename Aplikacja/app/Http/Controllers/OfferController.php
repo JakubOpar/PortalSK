@@ -149,6 +149,10 @@ class OfferController extends Controller
 
     public function editWithPhotos($id)
     {
+        if (Gate::denies('is-logged-in')) {
+            abort(401);
+        }
+
         $offer = Offer::with('photo')->findOrFail($id);
         $user = Auth::user();
         if ($user->id != $offer->user_id) {

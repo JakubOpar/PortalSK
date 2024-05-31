@@ -19,17 +19,17 @@ Route::get('/admin', [AuthController::class, 'adminPage'])->name('admin');
 // Zarządzanie ofertami
 
 Route::get('/admin/offers', [OfferController::class, 'index'])->name('offerIndex');
-Route::post('/admin/offers',[OfferController::class, 'store'])->name('offerStore');
+Route::post('/admin/offers/create',[OfferController::class, 'store'])->name('offerStore');
 Route::get('/admin/offers/{id}/offerEdit', [OfferController::class, 'show'])->name('offerShow');
-Route::put('/admin/offers/{id}', [OfferController::class, 'update'])->name('offerUpdate');
+Route::put('/admin/offers/{id}/update', [OfferController::class, 'update'])->name('offerUpdate');
 Route::delete('/admin/offers/deleteOffer/{id}', [OfferController::class, 'destroy'])->name('offerDelete');
 
 // Zarządzanie użytkownikami
 
 Route::get('/admin/users', [UserController::class, 'index'])->name('userIndex');
-Route::post('/admin/users',[UserController::class, 'store'])->name('userStore');
+Route::post('/admin/users/create',[UserController::class, 'store'])->name('userStore');
 Route::get('/admin/users/{id}/userEdit', [UserController::class, 'show'])->name('userShow');
-Route::put('/admin/users/{id}', [UserController::class, 'update'])->name('userUpdate');
+Route::put('/admin/users/{id}/update', [UserController::class, 'update'])->name('userUpdate');
 Route::delete('/admin/users/deleteUser/{id}', [UserController::class, 'destroy'])->name('userDelete');
 
 // Logowanie i rejestracja
@@ -44,22 +44,22 @@ Route::post('/rejestracja', [UserController::class, 'register'])->name('userRegi
 
 // Panel użytkownika
 
-Route::get('/user/{id}', [UserController::class, 'indexUser'])->name('profile');
-Route::get('/user/{id}/settings', [UserController::class, 'showSettings'])->name('profileEdit');
-Route::put('/user/{id}', [UserController::class, 'updateInSettings'])->name('profileUpdate');
-Route::delete('/user/deleteOffer/{id}', [OfferController::class, 'destroyByUser'])->name('userOfferDelete');
+Route::get('/users/{id}', [UserController::class, 'indexUser'])->name('profile');
+Route::get('/users/{id}/settings', [UserController::class, 'showSettings'])->name('profileEdit');
+Route::put('/users/{id}/update', [UserController::class, 'updateInSettings'])->name('profileUpdate');
+Route::delete('/users/deleteOffer/{id}', [OfferController::class, 'destroyByUser'])->name('userOfferDelete');
 
 // Panel ofert
 
 Route::get('/offers/{id}', [OfferController::class, 'showWithPhotos'])->name('offerShowWithPhotos');
-Route::get('user/offer/{id}', [OfferController::class, 'editWithPhotos'])->name('offerEditWithPhotos');
-Route::put('user/offer/{id}', [OfferController::class, 'updateByUser'])->name('updateByUser');
-Route::get('/offer/create', [OfferController::class, 'showAddOffer'])->name('showCreateOffer');
-Route::post('/offer/create',[OfferController::class, 'storeByUser'])->name('storeByUser');
+Route::get('users/offers/{id}', [OfferController::class, 'editWithPhotos'])->name('offerEditWithPhotos');
+Route::put('users/offers/{id}/update', [OfferController::class, 'updateByUser'])->name('updateByUser');
+Route::get('/offerCreate', [OfferController::class, 'showAddOffer'])->name('showCreateOffer');
+Route::post('/offerCreate/create',[OfferController::class, 'storeByUser'])->name('storeByUser');
 
 //zarzadzanie zdjęciami
-Route::post('/offer/photo/add/{id}',[PhotoController::class, 'store'])->name('storePhoto');
-Route::delete('/offer/photo/delete/{id}', [PhotoController::class, 'destroy'])->name('deletePhoto');
+Route::post('/offers/photo/add/{id}',[PhotoController::class, 'store'])->name('storePhoto');
+Route::delete('/offers/photo/delete/{id}', [PhotoController::class, 'destroy'])->name('deletePhoto');
 
 
 

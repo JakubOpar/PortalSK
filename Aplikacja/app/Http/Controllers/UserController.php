@@ -27,6 +27,11 @@ class UserController extends Controller
 
     public function indexUser($id)
     {
+
+        if (Gate::denies('is-logged-in')) {
+            abort(401);
+        }
+
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {
@@ -98,6 +103,10 @@ class UserController extends Controller
 
     public function showSettings($id)
     {
+        if (Gate::denies('is-logged-in')) {
+            abort(401);
+        }
+
         $currentUser = Auth::user();
 
         if ($currentUser->id != $id) {

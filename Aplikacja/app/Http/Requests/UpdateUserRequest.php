@@ -38,7 +38,7 @@ class UpdateUserRequest extends FormRequest
                 'unique:users,login,' . $this->route('id'),
                 'max:30',
             ],
-            'password' => '|string|max:100',
+            'password' => 'nullable|string|max:100',
             'permission' => 'required|integer|in:1,2'
         ];
     }
