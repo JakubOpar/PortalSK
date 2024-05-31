@@ -78,6 +78,53 @@ class OfferSeeder extends Seeder
                 'tags' => '#podręcznik #biologia #szkoła',
                 'user_id' => '3',
             ],
+            [
+                'name' => 'Oferta sprzedaży laptopa',
+                'description' => 'Sprzedam laptopa marki Dell, model XPS 15, rocznik 2023.',
+                'price' => '2800',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-20',
+                'status' => 'aktualna',
+                'tags' => '#laptop #Dell #sprzedam',
+                'user_id' => '2',
+            ],
+
+            [
+                'name' => 'Oferta wynajmu mieszkania',
+                'description' => 'Wynajmę 2-pokojowe mieszkanie w centrum miasta, umeblowane, od zaraz.',
+                'price' => '2000',
+                'negotiation' => false,
+                'type' => 'wynajem',
+                'publication_date' => '2024-05-18',
+                'status' => 'aktualna',
+                'tags' => '#wynajem #mieszkanie #centrum',
+                'user_id' => '3',
+            ],
+
+            [
+                'name' => 'Oferta sprzedaży samochodu',
+                'description' => 'Sprzedam samochód marki Toyota, model Corolla, rok produkcji 2022, przebieg 20 000 km.',
+                'price' => '45000',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-15',
+                'status' => 'aktualna',
+                'tags' => '#samochod #Toyota #sprzedam',
+                'user_id' => '4',
+            ],
+
+            [
+                'name' => 'Oferta sprzedaży roweru',
+                'description' => 'Sprzedam rower górski marki Trek, kolor czarny, stan bardzo dobry.',
+                'price' => '1200',
+                'negotiation' => true,
+                'type' => 'sprzedaz',
+                'publication_date' => '2024-05-12',
+                'status' => 'aktualna',
+                'tags' => '#rower #Trek #sprzedam',
+                'user_id' => '5',
+            ],
         ]);
     }
 }

@@ -74,7 +74,7 @@
             var data = Object.values(offersData);
 
             var chart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
                     labels: labels,
                     datasets: [{
