@@ -137,7 +137,7 @@ class OfferController extends Controller
         if (Gate::denies('access-admin')) {
             abort(403);
         }
-        $offer = Offer::find($id);
+        $offer = Offer::findOrFail($id);
         return view('AdminPages.offerEditA', ['offer' => $offer]);
     }
 
@@ -172,11 +172,11 @@ class OfferController extends Controller
     public function update(UpdateOfferRequest $request, $id)
     {
         if (Gate::denies('access-admin')) {
-            abort(401);
+            abort(403);
         }
 
         try {
-            $offer = Offer::find($id);
+            $offer = Offer::findOrFail($id);
             $input = $request->all();
             $offer->update($input);
 

@@ -87,7 +87,7 @@
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-9">
-                                <label for="fileInput" class="mr-2">Wybierz zdjęcia (.jpg, .png)</label>
+                                <label for="fileInput" class="mr-2">Wybierz zdjęcia (.jpg, .png .jpeg)</label>
                                 <input type="file" class="form-control-file" id="fileInput" name="photos[]" accept=".jpg,.png" multiple>
                             </div>
                             <div class="form-group col-md-3">

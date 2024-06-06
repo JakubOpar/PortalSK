@@ -10,12 +10,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('mainPage') }}">Strona główna</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#wycieczki">Kontakt</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#cennik">FAQ</a>
-                </li>
                 @can('access-admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('admin') }}">Zarządzaj</a>

@@ -76,14 +76,14 @@ class UserController extends Controller
     public function register(RegisterRequest $request)
     {
         if (Gate::allows('is-logged-in')) {
-            return response()->view('errors.403', [], 403);
+            abort(403);
         }
         try {
             $input = $request->validated();
             $input['permission'] = 2;
             User::create($input);
 
-            return redirect()->route('mainPage');
+            return redirect()->route('loginPage');
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()
                 ->withErrors($e->errors())
@@ -125,7 +125,7 @@ class UserController extends Controller
         }
 
         try {
-            $user = User::find($id);
+            $user = User::findOrFail($id);
             $input = $request->all();
 
             if (empty($input['password'])) {

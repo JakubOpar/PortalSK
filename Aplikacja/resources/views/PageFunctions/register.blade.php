@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-md-6">
                     <label for="phone_number" class="form-label">Numer telefonu</label>
-                    <input type="tel" class="form-control" id="phone_number" name="phone_number"
+                    <input type="number" class="form-control" id="phone_number" name="phone_number"
                         value="{{ old('phone_number') }}" required pattern="^[0-9]{9}$"
                         title="Numer telefonu musi mieć dokładnie 9 cyfr">
                 </div>

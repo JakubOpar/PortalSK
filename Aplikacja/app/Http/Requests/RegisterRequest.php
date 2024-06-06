@@ -32,7 +32,7 @@ class RegisterRequest extends FormRequest
                 'unique:users,email,',
                 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'
             ],
-            'phone_number' => 'required|string|min:9|max:9',
+            'phone_number' => 'required|numeric|min:9|max:9',
             'login' => 'required|string|max:30|unique:users,login',
             'password' => 'required|string|max:100',
             'commitPassword' => 'required|string|max:100|same:password'
