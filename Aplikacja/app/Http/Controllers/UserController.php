@@ -154,7 +154,7 @@ class UserController extends Controller
         }
 
         try {
-            $user = User::find($id);
+            $user = User::findOrFail($id);
             $input = $request->all();
             $user->update($input);
 

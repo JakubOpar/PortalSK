@@ -191,7 +191,7 @@ class OfferController extends Controller
     public function updateByUser(UpdateOfferRequest $request, $id)
     {
         try {
-            $offer = Offer::find($id);
+            $offer = Offer::findOrFail($id);
             $input = $request->all();
             $offer->update($input);
 
