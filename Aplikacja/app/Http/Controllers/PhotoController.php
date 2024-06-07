@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddPhotoRequest;
 use App\Models\Offer;
 use App\Models\Photo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class PhotoController extends Controller
@@ -15,7 +16,13 @@ class PhotoController extends Controller
             abort(401);
         }
 
-        $offer = Offer::find($id);
+        $offer = Offer::findOrFail($id);
+
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $offer->user_id) {
+            abort(403);
+        }
 
         if ($request->hasFile('photos')) {
             foreach ($request->file('photos') as $photo) {
@@ -41,6 +48,16 @@ class PhotoController extends Controller
 
     public function destroy($id)
     {
+        $photo = Photo::findOrFail($id);
+
+        $offer = Offer::findOrFail($photo->offer_id);
+
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $offer->user_id) {
+            abort(403);
+        }
+
         $photo = Photo::find($id);
         $photo->delete();
         return redirect()->back();

@@ -25,28 +25,28 @@ class OfferController extends Controller
         return view('AdminPages.offerA', ['offers' => $offers]);
     }
 
-    public function MainPageindex(Request $request)
+    public function mainPageindex(Request $request)
     {
-        $AllCount = Offer::count();
-        session()->put('AllCount', $AllCount);
+        $allCount = Offer::count();
+        session()->put('AllCount', $allCount);
 
         $amount = $request->session()->get('amount', 4);
 
         $offers = Offer::with(['photo', 'user'])->inRandomOrder()->take($amount)->get();
 
-        return view('index', ['offers' => $offers, 'AllCount' => $AllCount]);
+        return view('index', ['offers' => $offers, 'AllCount' => $allCount]);
     }
 
     public function showMoreOffers(Request $request)
     {
-        $AllCount = $request->session()->get('AllCount');
+        $allCount = $request->session()->get('AllCount');
         if (!$request->session()->has('amount')) {
             $request->session()->put('amount', 4);
         }
         $count = $request->session()->get('amount');
 
-        if ($count >= $AllCount) {
-            return redirect()->route('mainPage')->with('status', 'Brak większej ilości ofert.');
+        if ($count >= $allCount) {
+            return redirect()->route('mainPage')->with('status', 'Brak większej liczby ofert.');
         } else {
             $request->session()->increment('amount', 4);
 
@@ -64,9 +64,9 @@ class OfferController extends Controller
             ->orWhere('tags', 'like', "%$query%")
             ->get();
 
-        $AllCount = Offer::count();
+        $allCount = Offer::count();
 
-        return view('index', ['offers' => $offers, 'AllCount' => $AllCount]);
+        return view('index', ['offers' => $offers, 'AllCount' => $allCount]);
     }
 
 
@@ -192,6 +192,13 @@ class OfferController extends Controller
     {
         try {
             $offer = Offer::findOrFail($id);
+
+            $currentUser = Auth::user();
+
+            if ($currentUser->id != $offer->user_id) {
+                abort(403);
+            }
+
             $input = $request->all();
             $offer->update($input);
 
@@ -222,7 +229,15 @@ class OfferController extends Controller
         if (Gate::denies('is-logged-in')) {
             abort(401);
         }
+
         $offer = Offer::findOrFail($id);
+
+        $currentUser = Auth::user();
+
+        if ($currentUser->id != $offer->user_id) {
+            abort(403);
+        }
+
 
         $offer->photo()->delete();
 
